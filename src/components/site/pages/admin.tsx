@@ -1035,6 +1035,7 @@ function SettingsTab() {
   const [settings, setSettings] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadingCat, setUploadingCat] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -1048,6 +1049,38 @@ function SettingsTab() {
       toast({ title: 'Settings saved' });
     } catch (e: any) { toast({ title: 'Error', description: e.message, variant: 'destructive' }); }
     finally { setSaving(false); }
+  };
+
+  // Category images stored as JSON in settings.categoryImages
+  const categoryImages: Record<string, string> = (() => {
+    try {
+      const raw = settings.categoryImages;
+      if (!raw) return {};
+      return typeof raw === 'string' ? JSON.parse(raw) : raw;
+    } catch { return {}; }
+  })();
+
+  const setCategoryImage = (cat: string, url: string) => {
+    const updated = { ...categoryImages, [cat]: url };
+    setSettings({ ...settings, categoryImages: JSON.stringify(updated) });
+  };
+
+  const handleCatImageUpload = async (cat: string, file: File) => {
+    setUploadingCat(cat);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', 'categories');
+      const res = await fetch('/api/upload', { method: 'POST', body: formData, credentials: 'include' });
+      if (!res.ok) throw new Error('Upload failed');
+      const data = await res.json();
+      setCategoryImage(cat, data.url);
+      toast({ title: 'Image uploaded' });
+    } catch (e: any) {
+      toast({ title: 'Upload failed', description: e.message, variant: 'destructive' });
+    } finally {
+      setUploadingCat(null);
+    }
   };
 
   if (loading) return <div className="h-64 rounded-2xl bg-card animate-pulse" />;
@@ -1073,13 +1106,25 @@ function SettingsTab() {
     { key: 'stats_artists', label: 'Stats: Artists' },
   ];
 
+  const categoryList = [
+    { key: 'Spiritual', label: 'Spiritual Events', icon: '🛕' },
+    { key: 'Singing', label: 'Singing Events', icon: '🎤' },
+    { key: 'Wedding', label: 'Wedding Events', icon: '💍' },
+    { key: 'Family', label: 'Family Events', icon: '🎉' },
+    { key: 'Corporate', label: 'Corporate Events', icon: '🏢' },
+    { key: 'Stage Shows', label: 'Stage Shows', icon: '🎭' },
+  ];
+
   return (
     <div className="space-y-6">
       <div>
         <h1 className="font-display text-2xl sm:text-3xl font-bold">Settings</h1>
         <p className="text-sm text-foreground/60">Manage site-wide contact details and stats.</p>
       </div>
+
+      {/* General Settings */}
       <div className="rounded-2xl border border-gold/15 bg-card p-5 sm:p-6">
+        <h2 className="font-display text-lg font-bold mb-4">General Settings</h2>
         <div className="grid sm:grid-cols-2 gap-4">
           {fields.map(f => (
             <div key={f.key} className="space-y-2">
@@ -1088,11 +1133,67 @@ function SettingsTab() {
             </div>
           ))}
         </div>
-        <div className="mt-6 flex justify-end">
-          <Button onClick={save} disabled={saving} className="bg-gold-gradient text-white hover:opacity-90">
-            {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4 mr-1" />} Save Settings
-          </Button>
+      </div>
+
+      {/* Category Images */}
+      <div className="rounded-2xl border border-gold/15 bg-card p-5 sm:p-6">
+        <h2 className="font-display text-lg font-bold mb-1">Event Category Images</h2>
+        <p className="text-sm text-foreground/60 mb-4">Upload background images for each category card on the home page. If no image is set, the emoji icon will be used.</p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {categoryList.map(cat => (
+            <div key={cat.key} className="rounded-xl border border-border bg-background p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-2xl">{cat.icon}</span>
+                <span className="font-medium text-sm">{cat.label}</span>
+              </div>
+              {categoryImages[cat.key] ? (
+                <div className="relative mb-3 rounded-lg overflow-hidden aspect-[4/3]">
+                  <img src={categoryImages[cat.key]} alt={cat.label} className="h-full w-full object-cover" />
+                  <button
+                    onClick={() => setCategoryImage(cat.key, '')}
+                    className="absolute top-1 right-1 p-1.5 rounded-md bg-red-500/80 text-white hover:bg-red-500"
+                    aria-label="Remove image"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              ) : (
+                <div className="mb-3 rounded-lg border-2 border-dashed border-border aspect-[4/3] flex items-center justify-center text-foreground/30">
+                  <Image className="h-8 w-8" />
+                </div>
+              )}
+              <label className="block">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={e => {
+                    const file = e.target.files?.[0];
+                    if (file) handleCatImageUpload(cat.key, file);
+                  }}
+                />
+                <span className="inline-flex items-center justify-center w-full h-9 rounded-md bg-gold-gradient text-white text-sm font-medium cursor-pointer hover:opacity-90">
+                  {uploadingCat === cat.key ? <Loader2 className="h-4 w-4 animate-spin" /> : <>
+                    <Plus className="h-4 w-4 mr-1" /> Upload Image
+                  </>}
+                </span>
+              </label>
+              <Input
+                className="mt-2 text-xs"
+                placeholder="or paste image URL"
+                value={categoryImages[cat.key] || ''}
+                onChange={e => setCategoryImage(cat.key, e.target.value)}
+              />
+            </div>
+          ))}
         </div>
+      </div>
+
+      {/* Save button */}
+      <div className="flex justify-end">
+        <Button onClick={save} disabled={saving} className="bg-gold-gradient text-white hover:opacity-90">
+          {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4 mr-1" />} Save All Settings
+        </Button>
       </div>
     </div>
   );

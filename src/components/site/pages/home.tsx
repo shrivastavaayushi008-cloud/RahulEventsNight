@@ -24,7 +24,7 @@ export function HomePage({ data, loading, navigate }: PageProps) {
   return (
     <>
       <Hero settings={data.settings} navigate={navigate} />
-      <Categories navigate={navigate} />
+      <Categories navigate={navigate} settings={data.settings} />
       <FeaturedEvents events={data.events} loading={loading} navigate={navigate} />
       <UpcomingEvents upcoming={data.upcoming} loading={loading} settings={data.settings} />
       <ArtistsPreview artists={data.artists} loading={loading} navigate={navigate} />
@@ -49,7 +49,7 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
         <img
           src="/images/hero/banner.png"
           alt="RahulEventsNight Banner"
-          className="h-full w-full object-cover object-center sm:object-left animate-kenburns"
+          className="h-full w-full object-cover object-[center_30%] sm:object-left animate-kenburns"
         />
         {/* Dark overlay for text readability - stronger on mobile */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/60 sm:via-black/30 sm:to-black/50" />
@@ -99,24 +99,24 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
 
           {/* Phone/WhatsApp quick contact - compact on mobile */}
           {phone && (
-            <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 max-w-xl">
-              <a href={`tel:${settings.phone}`} className="group flex items-center gap-3 px-3 sm:px-4 py-2.5 rounded-xl bg-black/60 backdrop-blur border border-white/10 hover:border-gold/50 transition-colors">
-                <span className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-gold-gradient text-white shadow-gold shrink-0">
+            <div className="mt-5 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 max-w-xl">
+              <a href={`tel:${settings.phone}`} className="group flex items-center gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-black/60 backdrop-blur border border-white/10 hover:border-gold/50 transition-colors">
+                <span className="flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-gold-gradient text-white shadow-gold shrink-0">
                   <Phone className="h-4 w-4 sm:h-5 sm:w-5" />
                 </span>
                 <span className="min-w-0">
                   <span className="block text-[10px] font-bold text-gold uppercase tracking-wider">Call</span>
-                  <span className="block font-display text-base sm:text-lg font-extrabold text-white truncate">{phone}</span>
+                  <span className="block font-display text-sm sm:text-lg font-extrabold text-white truncate">{phone}</span>
                 </span>
               </a>
               {whatsapp && (
-                <a href={waLink} target="_blank" rel="noreferrer" className="group flex items-center gap-3 px-3 sm:px-4 py-2.5 rounded-xl bg-black/60 backdrop-blur border border-white/10 hover:border-whatsapp/50 transition-colors">
-                  <span className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-whatsapp text-white shadow-lux shrink-0">
+                <a href={waLink} target="_blank" rel="noreferrer" className="group flex items-center gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-black/60 backdrop-blur border border-white/10 hover:border-whatsapp/50 transition-colors">
+                  <span className="flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-whatsapp text-white shadow-lux shrink-0">
                     <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5" />
                   </span>
                   <span className="min-w-0">
                     <span className="block text-[10px] font-bold text-whatsapp uppercase tracking-wider">WhatsApp</span>
-                    <span className="block font-display text-base sm:text-lg font-extrabold text-white truncate">+91 {whatsapp}</span>
+                    <span className="block font-display text-sm sm:text-lg font-extrabold text-white truncate">+91 {whatsapp}</span>
                   </span>
                 </a>
               )}
@@ -162,7 +162,16 @@ function Stats({ settings }: { settings: any }) {
 }
 
 /* ----------------------------- Categories ----------------------------- */
-function Categories({ navigate }: { navigate: (r: Route) => void }) {
+function Categories({ navigate, settings }: { navigate: (r: Route) => void; settings: any }) {
+  // Category images stored in settings as JSON: { "Spiritual": "/images/...", "Singing": "..." }
+  const categoryImages: Record<string, string> = (() => {
+    try {
+      const raw = settings?.categoryImages;
+      if (!raw) return {};
+      return typeof raw === 'string' ? JSON.parse(raw) : raw;
+    } catch { return {}; }
+  })();
+
   return (
     <section className="bg-background py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
@@ -175,18 +184,36 @@ function Categories({ navigate }: { navigate: (r: Route) => void }) {
           />
         </Reveal>
         <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          {CATS.map((cat, i) => (
-            <Reveal key={cat.key} delay={i * 80} animation="scale">
-              <button
-                onClick={() => navigate('events')}
-                className="group w-full rounded-2xl border border-gold/15 bg-card p-5 text-center transition-all hover:-translate-y-2 hover:border-gold/40 hover:shadow-gold card-lift"
-              >
-                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">{cat.icon}</div>
-                <div className="font-display text-sm font-bold text-foreground">{cat.label}</div>
-                <div className="font-hindi text-xs text-gold mt-0.5">{cat.labelHi}</div>
-              </button>
-            </Reveal>
-          ))}
+          {CATS.map((cat, i) => {
+            const img = categoryImages[cat.key];
+            return (
+              <Reveal key={cat.key} delay={i * 80} animation="scale">
+                <button
+                  onClick={() => navigate('events')}
+                  className="group relative w-full rounded-2xl border border-gold/15 bg-card overflow-hidden text-center transition-all hover:-translate-y-2 hover:border-gold/40 hover:shadow-gold card-lift"
+                >
+                  {img ? (
+                    <>
+                      <div className="relative aspect-[4/3] overflow-hidden">
+                        <img src={img} alt={cat.label} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                      </div>
+                      <div className="absolute bottom-0 inset-x-0 p-3 text-left">
+                        <div className="font-display text-sm font-bold text-white">{cat.label}</div>
+                        <div className="font-hindi text-xs text-gold">{cat.labelHi}</div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="p-5">
+                      <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">{cat.icon}</div>
+                      <div className="font-display text-sm font-bold text-foreground">{cat.label}</div>
+                      <div className="font-hindi text-xs text-gold mt-0.5">{cat.labelHi}</div>
+                    </div>
+                  )}
+                </button>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>
