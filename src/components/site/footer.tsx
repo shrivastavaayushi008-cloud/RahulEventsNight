@@ -19,7 +19,7 @@ export function Footer({ navigate, settings }: FooterProps) {
   const waLink = whatsapp ? `https://wa.me/91${whatsapp}` : '#';
 
   return (
-    <footer className="mt-auto bg-maroon-gradient border-t border-gold/30 text-white">
+    <footer className="mt-auto bg-[#1a1a1a] border-t border-gold/20 text-white">
       <div className="mx-auto max-w-7xl px-4 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
