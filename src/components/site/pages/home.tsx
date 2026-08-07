@@ -380,7 +380,7 @@ function ArtistsPreview({ artists, loading, navigate }: { artists: Artist[]; loa
         </Reveal>
         {loading ? (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {Array.from({ length: 4 }).map((_, i) => <div key={i} className="aspect-[3/4] rounded-2xl bg-card animate-pulse" />)}
+            {Array.from({ length: 4 }).map((_, i) => <div key={i} className="aspect-square rounded-2xl bg-card animate-pulse" />)}
           </div>
         ) : (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -390,8 +390,8 @@ function ArtistsPreview({ artists, loading, navigate }: { artists: Artist[]; loa
                   onClick={() => navigate('artists')}
                   className="group w-full rounded-2xl border border-gold/15 bg-background overflow-hidden text-left transition-all hover:-translate-y-2 hover:shadow-lux card-lift"
                 >
-                  <div className="relative aspect-[3/4] overflow-hidden img-zoom">
-                    <img src={a.avatar} alt={a.name} className="h-full w-full object-cover" />
+                  <div className="relative aspect-square overflow-hidden img-zoom">
+                    <img src={a.avatar} alt={a.name} className="h-full w-full object-cover object-top" />
                     {a.featured && (
                       <span className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-gold-gradient px-2 py-0.5 text-[10px] font-bold text-white">
                         <Star className="h-2.5 w-2.5 fill-white" /> Top
