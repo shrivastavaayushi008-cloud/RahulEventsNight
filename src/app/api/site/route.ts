@@ -30,6 +30,28 @@ export async function GET(_req: NextRequest) {
     const settings: Record<string, string> = {};
     for (const s of settingsList) settings[s.key] = s.value;
 
+    // Fallback defaults (in case DB is not seeded)
+    const DEFAULTS: Record<string, string> = {
+      companyName: 'RahulEventsNight',
+      companyNameHindi: 'राहुल इवेंट्स नाईट',
+      tagline: 'Every Event, Every Emotion, One Stage',
+      taglineHindi: 'हर पल यादगार, हर इवेंट शानदार',
+      tagline2: 'आपका विश्वास, हमारी पहचान',
+      phone: '9709954777',
+      phoneDisplay: '+91 97099 54777',
+      whatsapp: '7979962408',
+      email: 'officialrohit0201@gmail.com',
+      website: 'rahuleventsnight.online',
+      address: 'Attardah Pokhariyapith near Ujjwal Vidyapith School 842002',
+      stats_events: '500+',
+      stats_clients: '1000+',
+      stats_years: '15',
+      stats_artists: '25+',
+    };
+    for (const [k, v] of Object.entries(DEFAULTS)) {
+      if (!settings[k]) settings[k] = v;
+    }
+
     const parsedEvents = events.map(e => ({ ...e, gallery: e.gallery ? (typeof e.gallery === 'string' ? JSON.parse(e.gallery) : e.gallery) : [] }));
     const parsedArtists = artists.map(a => ({ ...a, social: a.social ? (typeof a.social === 'string' ? JSON.parse(a.social) : a.social) : {} }));
 
