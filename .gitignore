@@ -58,3 +58,4 @@ server.log
 
 # Uploads (user screenshots)
 /upload/
+tool-results/
