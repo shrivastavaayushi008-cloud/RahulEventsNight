@@ -44,16 +44,15 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
 
   return (
     <section className="relative min-h-[100svh] flex items-center overflow-hidden bg-black">
-      {/* Banner background */}
+      {/* Banner background - highlighted, light overlay */}
       <div className="absolute inset-0">
         <img
           src="/images/hero/banner.png"
           alt="RahulEventsNight Banner"
           className="h-full w-full object-cover object-center animate-kenburns"
         />
-        {/* Strong left-to-right dark gradient so left text area is always readable */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-black/50" />
+        {/* Light overlay - banner stays visible, only darken bottom for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-black/30" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-20 w-full">
@@ -253,9 +252,10 @@ function FeaturedEventCard({ event, navigate, large }: { event: EventItem; navig
     >
       <div className={cn('relative overflow-hidden', large ? 'aspect-[16/10]' : 'aspect-[4/3]')}>
         <img src={event.coverImage} alt={event.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+        {/* Subtle dark gradient only at bottom for text legibility - no white wash */}
+        <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
         <div className="absolute top-3 left-3">
-          <span className="inline-flex items-center rounded-full bg-gold-gradient px-3 py-1 text-xs font-semibold text-maroon">
+          <span className="inline-flex items-center rounded-full bg-gold-gradient px-3 py-1 text-xs font-semibold text-white">
             {event.category}
           </span>
         </div>
