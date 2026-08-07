@@ -46,7 +46,7 @@ export function TestimonialsPage({ data, loading, navigate }: PageProps) {
                   </div>
                   <p className="text-sm text-foreground/80 leading-relaxed flex-1 italic">&ldquo;{t.message}&rdquo;</p>
                   <div className="mt-4 pt-4 border-t border-gold/10 flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gold-gradient text-maroon font-bold">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gold-gradient text-white font-bold">
                       {t.name.charAt(0)}
                     </div>
                     <div>
@@ -69,7 +69,7 @@ export function TestimonialsPage({ data, loading, navigate }: PageProps) {
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             {data.settings.phone && (
               <a href={`tel:${data.settings.phone}`}>
-                <Button size="lg" className="bg-gold-gradient text-maroon hover:opacity-90 font-semibold shadow-gold h-12 px-7">
+                <Button size="lg" className="bg-gold-gradient text-white hover:opacity-90 font-semibold shadow-gold h-12 px-7">
                   <Phone className="mr-2 h-4 w-4" /> {data.settings.phoneDisplay || data.settings.phone}
                 </Button>
               </a>

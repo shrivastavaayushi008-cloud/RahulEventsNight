@@ -43,58 +43,42 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
   const waLink = whatsapp ? `https://wa.me/91${whatsapp}` : '#';
 
   return (
-    <section className="relative min-h-[100svh] flex items-center overflow-hidden">
-      {/* Background */}
+    <section className="relative min-h-[100svh] flex items-center overflow-hidden bg-black">
+      {/* Banner background */}
       <div className="absolute inset-0">
         <img
-          src="/images/hero/hero-jagran.png"
-          alt="Jagran stage"
-          className="h-full w-full object-cover animate-kenburns"
+          src="/images/hero/banner.png"
+          alt="RahulEventsNight Banner"
+          className="h-full w-full object-cover object-center animate-kenburns"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/50" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/60" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 lg:px-8 pt-28 pb-16 w-full">
-        <div className="max-w-3xl animate-fade-up">
-          <div className="flex items-center gap-3 mb-5">
-            <span className="h-px w-10 bg-gold" />
-            <span className="kicker font-hindi text-sm text-gold">{settings.taglineHindi || 'हर पल यादगार, हर इवेंट शानदार'}</span>
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-20 w-full">
+        <div className="max-w-2xl animate-fade-up">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold/15 backdrop-blur border border-gold/40 mb-5">
+            <Sparkles className="h-3.5 w-3.5 text-gold" />
+            <span className="font-hindi text-sm text-gold">{settings.taglineHindi || 'हर पल यादगार, हर इवेंट शानदार'}</span>
           </div>
 
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.05] text-white">
-            Every Event,
-            <span className="block text-gradient-gold">Every Emotion,</span>
-            <span className="block">One Stage</span>
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.05] text-white drop-shadow-2xl">
+            Rahul<span className="text-gradient-gold">EventsNight</span>
           </h1>
-
-          <p className="mt-4 font-hindi text-xl sm:text-2xl text-gold">
+          <p className="mt-2 font-hindi text-lg sm:text-xl lg:text-2xl text-gold drop-shadow-lg">
             राहुल इवेंट्स नाईट
           </p>
 
-          <p className="mt-5 text-base sm:text-lg text-white/80 leading-relaxed max-w-2xl">
-            Jagran · Hanuman Aradhna · Track Singing · Wedding Song Events · Sangeet Night —
-            professional live performances for every celebration. Book now for a memorable event.
+          <p className="mt-5 text-sm sm:text-base lg:text-lg text-white/90 leading-relaxed max-w-xl drop-shadow-lg">
+            Jagran · Hanuman Aradhna · Track Singing · Wedding Song Events —
+            professional live performances for every celebration.
           </p>
 
-          {/* Featured event pills */}
-          <div className="mt-6 flex flex-wrap gap-2">
-            {['🛕 Jagran', '🕉️ Hanuman Aradhna', '🎤 Track Singing', '💍 Wedding Singing', '💃 Sangeet Night'].map((p, i) => (
-              <span
-                key={p}
-                className="px-3 py-1.5 rounded-full text-xs font-medium bg-white/10 backdrop-blur border border-gold/40 text-gold animate-fade-up"
-                style={{ animationDelay: `${300 + i * 100}ms` }}
-              >
-                {p}
-              </span>
-            ))}
-          </div>
-
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+          {/* CTA buttons */}
+          <div className="mt-7 flex flex-wrap items-center gap-3">
             <Button
               onClick={() => navigate('contact')}
               size="lg"
-              className="btn-shine bg-gold-gradient text-white hover:opacity-90 font-semibold shadow-gold h-12 px-7"
+              className="btn-shine bg-gold-gradient text-white hover:opacity-90 font-semibold shadow-gold h-11 sm:h-12 px-6 sm:px-7"
             >
               Book Now <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
@@ -102,8 +86,7 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
               <a href={waLink} target="_blank" rel="noreferrer">
                 <Button
                   size="lg"
-                  variant="outline"
-                  className="border-white/40 text-white hover:bg-white/10 hover:text-white h-12 px-7 backdrop-blur"
+                  className="bg-whatsapp text-white hover:bg-whatsapp/90 font-semibold shadow-lux h-11 sm:h-12 px-6 sm:px-7"
                 >
                   <MessageCircle className="mr-2 h-4 w-4" /> WhatsApp Booking
                 </Button>
@@ -113,24 +96,24 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
 
           {/* Phone prominent */}
           {phone && (
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            <div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
               <a href={`tel:${settings.phone}`} className="group flex items-center gap-3">
-                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gold-gradient text-white shadow-gold animate-glow">
+                <span className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-gold-gradient text-white shadow-gold animate-glow">
                   <Phone className="h-5 w-5" />
                 </span>
                 <span>
-                  <span className="block text-xs text-white/60 uppercase tracking-wider">Call for Booking</span>
-                  <span className="block font-display text-xl font-bold text-white group-hover:text-gold transition-colors">{phone}</span>
+                  <span className="block text-[10px] sm:text-xs text-white/60 uppercase tracking-wider">Call for Booking</span>
+                  <span className="block font-display text-lg sm:text-xl font-bold text-white group-hover:text-gold transition-colors">{phone}</span>
                 </span>
               </a>
               {whatsapp && (
                 <a href={waLink} target="_blank" rel="noreferrer" className="group flex items-center gap-3">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-whatsapp text-white shadow-lux">
+                  <span className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-whatsapp text-white shadow-lux">
                     <MessageCircle className="h-5 w-5" />
                   </span>
                   <span>
-                    <span className="block text-xs text-white/60 uppercase tracking-wider">WhatsApp</span>
-                    <span className="block font-display text-xl font-bold text-white group-hover:text-whatsapp transition-colors">+91 {whatsapp}</span>
+                    <span className="block text-[10px] sm:text-xs text-white/60 uppercase tracking-wider">WhatsApp</span>
+                    <span className="block font-display text-lg sm:text-xl font-bold text-white group-hover:text-whatsapp transition-colors">+91 {whatsapp}</span>
                   </span>
                 </a>
               )}
@@ -495,7 +478,7 @@ function Testimonials({ testimonials, loading }: { testimonials: Testimonial[]; 
               &ldquo;{t.message}&rdquo;
             </p>
             <div className="mt-6 flex items-center justify-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gold-gradient text-maroon font-bold">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gold-gradient text-white font-bold">
                 {t.name.charAt(0)}
               </div>
               <div className="text-left">
@@ -559,19 +542,19 @@ function ContactCTA({ settings, navigate }: { settings: any; navigate: (r: Route
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               {phone && (
                 <a href={`tel:${settings.phone}`}>
-                  <Button size="lg" className="bg-gold-gradient text-maroon hover:opacity-90 font-semibold shadow-gold h-12 px-7">
+                  <Button size="lg" className="bg-maroon-gradient text-white hover:opacity-90 font-semibold shadow-lux h-12 px-7 btn-shine">
                     <Phone className="mr-2 h-4 w-4" /> {phone}
                   </Button>
                 </a>
               )}
               {whatsapp && (
                 <a href={waLink} target="_blank" rel="noreferrer">
-                  <Button size="lg" variant="outline" className="border-whatsapp/40 text-whatsapp hover:bg-whatsapp/10 h-12 px-7">
+                  <Button size="lg" className="bg-whatsapp text-white hover:bg-whatsapp/90 font-semibold shadow-lux h-12 px-7">
                     <MessageCircle className="mr-2 h-4 w-4" /> WhatsApp +91 {whatsapp}
                   </Button>
                 </a>
               )}
-              <Button onClick={() => navigate('contact')} size="lg" variant="outline" className="border-gold/30 text-foreground hover:bg-gold/10 h-12 px-7">
+              <Button onClick={() => navigate('contact')} size="lg" variant="outline" className="border-foreground/20 text-foreground hover:bg-foreground/5 h-12 px-7">
                 Booking Form
               </Button>
             </div>

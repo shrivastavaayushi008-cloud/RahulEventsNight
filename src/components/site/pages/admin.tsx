@@ -81,7 +81,7 @@ export function AdminPage({ navigate }: AdminPageProps) {
       >
         <div className="p-5 border-b border-gold/10 flex items-center gap-2.5">
           <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gold-gradient">
-            <Sparkles className="h-4 w-4 text-maroon" />
+            <Sparkles className="h-4 w-4 text-white" />
           </span>
           <div>
             <div className="font-display text-sm font-bold text-foreground">RahulEventsNight</div>
@@ -98,7 +98,7 @@ export function AdminPage({ navigate }: AdminPageProps) {
               onClick={() => { setTab(t.id); setSidebarOpen(false); }}
               className={cn(
                 'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors',
-                tab === t.id ? 'bg-gold-gradient text-maroon font-medium' : 'text-foreground/70 hover:bg-foreground/5 hover:text-foreground'
+                tab === t.id ? 'bg-gold-gradient text-white font-medium' : 'text-foreground/70 hover:bg-foreground/5 hover:text-foreground'
               )}
             >
               <t.icon className="h-4 w-4" />
@@ -181,7 +181,7 @@ function LoginScreen({ onSuccess, navigate }: { onSuccess: (a: AdminUser) => voi
       <div className="relative w-full max-w-md">
         <div className="text-center mb-8">
           <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-gold-gradient shadow-gold mb-4">
-            <Sparkles className="h-6 w-6 text-maroon" />
+            <Sparkles className="h-6 w-6 text-white" />
           </div>
           <h1 className="font-display text-3xl font-bold text-foreground">Admin Login</h1>
           <p className="mt-2 text-sm text-foreground/50">RahulEventsNight Management Panel</p>
@@ -196,7 +196,7 @@ function LoginScreen({ onSuccess, navigate }: { onSuccess: (a: AdminUser) => voi
             <Input id="password" type="password" required value={password} onChange={e => setPassword(e.target.value)} className="bg-background border-gold/20" />
           </div>
           {err && <div className="text-sm text-red-400 bg-red-500/10 rounded-md px-3 py-2">{err}</div>}
-          <Button type="submit" disabled={loading} className="w-full bg-gold-gradient text-maroon hover:opacity-90 font-semibold shadow-gold h-11">
+          <Button type="submit" disabled={loading} className="w-full bg-gold-gradient text-white hover:opacity-90 font-semibold shadow-gold h-11">
             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Sign In'}
           </Button>
           <div className="text-xs text-foreground/40 text-center pt-2 border-t border-gold/10">
@@ -377,7 +377,7 @@ function EventsTab() {
           <h1 className="font-display text-2xl sm:text-3xl font-bold">Events</h1>
           <p className="text-sm text-foreground/60">{items.length} events</p>
         </div>
-        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-maroon hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Event</Button>
+        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Event</Button>
       </div>
       {loading ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">{Array.from({ length: 6 }).map((_, i) => <div key={i} className="h-48 rounded-2xl bg-card animate-pulse" />)}</div>
@@ -388,7 +388,7 @@ function EventsTab() {
               <div className="relative aspect-video">
                 <img src={e.coverImage} alt={e.title} className="h-full w-full object-cover" />
                 <div className="absolute top-2 left-2 flex gap-1.5">
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-gold-gradient text-maroon font-semibold">{e.category}</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-gold-gradient text-white font-semibold">{e.category}</span>
                   {e.featured && <span className="text-[10px] px-2 py-0.5 rounded-full bg-maroon/70 text-gold">★</span>}
                 </div>
               </div>
@@ -466,7 +466,7 @@ function EventModal({ event, onClose, onSaved }: { event: any; onClose: () => vo
         </div>
         <div className="p-5 border-t border-gold/10 flex justify-end gap-2 sticky bottom-0 bg-card">
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={save} disabled={saving} className="bg-gold-gradient text-maroon hover:opacity-90">
+          <Button onClick={save} disabled={saving} className="bg-gold-gradient text-white hover:opacity-90">
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4 mr-1" />}
             {event ? 'Save Changes' : 'Create Event'}
           </Button>
@@ -499,7 +499,7 @@ function GalleryTab() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Gallery</h1><p className="text-sm text-foreground/60">{items.length} items</p></div>
-        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-maroon hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Item</Button>
+        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Item</Button>
       </div>
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">{Array.from({ length: 8 }).map((_, i) => <div key={i} className="aspect-square rounded-xl bg-card animate-pulse" />)}</div>
@@ -513,7 +513,7 @@ function GalleryTab() {
                   <button onClick={() => remove(g.id)} className="p-1.5 rounded-md bg-red-500/80 text-white hover:bg-red-500" aria-label="Delete"><Trash2 className="h-3.5 w-3.5" /></button>
                 </div>
                 <div>
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-gold-gradient text-maroon font-semibold">{g.category}</span>
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-gold-gradient text-white font-semibold">{g.category}</span>
                   <div className="text-xs text-white mt-1 line-clamp-2">{g.title}</div>
                 </div>
               </div>
@@ -581,7 +581,7 @@ function GalleryModal({ onClose, onSaved }: { onClose: () => void; onSaved: () =
         </div>
         <div className="p-5 border-t border-gold/10 flex justify-end gap-2 sticky bottom-0 bg-card">
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={save} disabled={saving} className="bg-gold-gradient text-maroon hover:opacity-90">
+          <Button onClick={save} disabled={saving} className="bg-gold-gradient text-white hover:opacity-90">
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4 mr-1" />} Add Item
           </Button>
         </div>
@@ -618,7 +618,7 @@ function ArtistsTab() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Artists</h1><p className="text-sm text-foreground/60">{items.length} artists</p></div>
-        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-maroon hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Artist</Button>
+        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Artist</Button>
       </div>
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">{Array.from({ length: 4 }).map((_, i) => <div key={i} className="aspect-square rounded-2xl bg-card animate-pulse" />)}</div>
@@ -628,7 +628,7 @@ function ArtistsTab() {
             <div key={a.id} className="rounded-2xl border border-gold/15 bg-card overflow-hidden">
               <div className="aspect-square relative">
                 <img src={a.avatar} alt={a.name} className="h-full w-full object-cover" />
-                {a.featured && <span className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-gold-gradient px-2 py-0.5 text-[10px] font-bold text-maroon"><Star className="h-2.5 w-2.5 fill-maroon" /> Top</span>}
+                {a.featured && <span className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-gold-gradient px-2 py-0.5 text-[10px] font-bold text-white"><Star className="h-2.5 w-2.5 fill-white" /> Top</span>}
               </div>
               <div className="p-3">
                 <div className="font-semibold text-sm">{a.name}</div>
@@ -695,7 +695,7 @@ function ArtistModal({ onClose, onSaved }: { onClose: () => void; onSaved: () =>
         </div>
         <div className="p-5 border-t border-gold/10 flex justify-end gap-2 sticky bottom-0 bg-card">
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={save} disabled={saving} className="bg-gold-gradient text-maroon hover:opacity-90">
+          <Button onClick={save} disabled={saving} className="bg-gold-gradient text-white hover:opacity-90">
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4 mr-1" />} Add Artist
           </Button>
         </div>
@@ -727,7 +727,7 @@ function VideosTab() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Videos</h1><p className="text-sm text-foreground/60">{items.length} videos</p></div>
-        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-maroon hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Video</Button>
+        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Video</Button>
       </div>
       {loading ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">{Array.from({ length: 6 }).map((_, i) => <div key={i} className="aspect-video rounded-2xl bg-card animate-pulse" />)}</div>
@@ -792,7 +792,7 @@ function VideoModal({ onClose, onSaved }: { onClose: () => void; onSaved: () => 
         </div>
         <div className="p-5 border-t border-gold/10 flex justify-end gap-2 sticky bottom-0 bg-card">
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={save} disabled={saving} className="bg-gold-gradient text-maroon hover:opacity-90">
+          <Button onClick={save} disabled={saving} className="bg-gold-gradient text-white hover:opacity-90">
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4 mr-1" />} Add Video
           </Button>
         </div>
@@ -829,7 +829,7 @@ function UpcomingTab() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Upcoming Events</h1><p className="text-sm text-foreground/60">{items.length} scheduled</p></div>
-        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-maroon hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Event</Button>
+        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Event</Button>
       </div>
       {loading ? (
         <div className="space-y-3">{Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-20 rounded-2xl bg-card animate-pulse" />)}</div>
@@ -839,7 +839,7 @@ function UpcomingTab() {
         <div className="space-y-3">
           {items.map(u => (
             <div key={u.id} className="rounded-2xl border border-gold/15 bg-card p-4 flex flex-wrap items-center gap-4">
-              <div className="flex flex-col items-center justify-center w-14 h-14 rounded-xl bg-gold-gradient text-maroon shrink-0">
+              <div className="flex flex-col items-center justify-center w-14 h-14 rounded-xl bg-gold-gradient text-white shrink-0">
                 <span className="font-display text-xl font-bold leading-none">{new Date(u.eventDate).getDate()}</span>
                 <span className="text-[10px] uppercase">{new Date(u.eventDate).toLocaleDateString('en-IN', { month: 'short' })}</span>
               </div>
@@ -909,7 +909,7 @@ function UpcomingModal({ onClose, onSaved }: { onClose: () => void; onSaved: () 
         </div>
         <div className="p-5 border-t border-gold/10 flex justify-end gap-2 sticky bottom-0 bg-card">
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={save} disabled={saving} className="bg-gold-gradient text-maroon hover:opacity-90">
+          <Button onClick={save} disabled={saving} className="bg-gold-gradient text-white hover:opacity-90">
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4 mr-1" />} Add Event
           </Button>
         </div>
@@ -945,7 +945,7 @@ function TestimonialsTab() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Testimonials</h1><p className="text-sm text-foreground/60">{items.length} testimonials</p></div>
-        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-maroon hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add</Button>
+        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add</Button>
       </div>
       {loading ? (
         <div className="space-y-3">{Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-32 rounded-2xl bg-card animate-pulse" />)}</div>
@@ -1021,7 +1021,7 @@ function TestimonialModal({ onClose, onSaved }: { onClose: () => void; onSaved: 
         </div>
         <div className="p-5 border-t border-gold/10 flex justify-end gap-2 sticky bottom-0 bg-card">
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={save} disabled={saving} className="bg-gold-gradient text-maroon hover:opacity-90">
+          <Button onClick={save} disabled={saving} className="bg-gold-gradient text-white hover:opacity-90">
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4 mr-1" />} Add Testimonial
           </Button>
         </div>
@@ -1089,7 +1089,7 @@ function SettingsTab() {
           ))}
         </div>
         <div className="mt-6 flex justify-end">
-          <Button onClick={save} disabled={saving} className="bg-gold-gradient text-maroon hover:opacity-90">
+          <Button onClick={save} disabled={saving} className="bg-gold-gradient text-white hover:opacity-90">
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4 mr-1" />} Save Settings
           </Button>
         </div>

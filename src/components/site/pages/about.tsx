@@ -143,7 +143,7 @@ export function AboutPage({ data, loading, navigate }: PageProps) {
               <div className="mt-6 flex flex-wrap justify-center gap-3">
                 {settings.phone && (
                   <a href={`tel:${settings.phone}`}>
-                    <Button size="lg" className="bg-gold-gradient text-maroon hover:opacity-90 font-semibold shadow-gold h-12 px-7">
+                    <Button size="lg" className="bg-gold-gradient text-white hover:opacity-90 font-semibold shadow-gold h-12 px-7">
                       <Phone className="mr-2 h-4 w-4" /> {settings.phoneDisplay || settings.phone}
                     </Button>
                   </a>

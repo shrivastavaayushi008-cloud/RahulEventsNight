@@ -14,7 +14,7 @@ export function FloatingContact({ settings }: { settings: SiteSettings }) {
       {phone && (
         <a
           href={`tel:${phone}`}
-          className="group flex h-12 w-12 lg:h-14 lg:w-14 items-center justify-center rounded-full bg-gold-gradient text-maroon shadow-gold animate-glow transition-transform hover:scale-110"
+          className="group flex h-12 w-12 lg:h-14 lg:w-14 items-center justify-center rounded-full bg-gold-gradient text-white shadow-gold animate-glow transition-transform hover:scale-110"
           aria-label="Call now"
         >
           <Phone className="h-5 w-5 lg:h-6 lg:w-6" />

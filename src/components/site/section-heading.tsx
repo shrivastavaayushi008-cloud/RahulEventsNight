@@ -34,14 +34,16 @@ export function SectionHeading({
           <span className="h-px w-8 bg-gold" />
         </div>
       )}
-      <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-foreground">
+      <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight tracking-tight text-foreground">
         {title}
       </h2>
       {titleHi && (
-        <p className="mt-2 font-hindi text-xl sm:text-2xl text-gold">{titleHi}</p>
+        <p className={cn('mt-2 font-hindi text-lg sm:text-xl lg:text-2xl text-maroon', align === 'center' && 'mx-auto')}>
+          {titleHi}
+        </p>
       )}
       {subtitle && (
-        <p className={cn('mt-3 text-base text-foreground/60 leading-relaxed', align === 'center' && 'mx-auto')}>
+        <p className={cn('mt-3 text-sm sm:text-base text-foreground/60 leading-relaxed', align === 'center' && 'mx-auto')}>
           {subtitle}
         </p>
       )}

@@ -52,7 +52,7 @@ export function EventsPage({ data, loading, navigate }: PageProps) {
               className={cn(
                 'px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all',
                 activeCategory === 'all'
-                  ? 'bg-gold-gradient text-maroon'
+                  ? 'bg-gold-gradient text-white'
                   : 'border border-gold/20 text-foreground/70 hover:border-gold/50 hover:text-gold'
               )}
             >
@@ -65,7 +65,7 @@ export function EventsPage({ data, loading, navigate }: PageProps) {
                 className={cn(
                   'px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all flex items-center gap-1.5',
                   activeCategory === c.key
-                    ? 'bg-gold-gradient text-maroon'
+                    ? 'bg-gold-gradient text-white'
                     : 'border border-gold/20 text-foreground/70 hover:border-gold/50 hover:text-gold'
                 )}
               >
@@ -108,7 +108,7 @@ export function EventsPage({ data, loading, navigate }: PageProps) {
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             {data.settings.phone && (
               <a href={`tel:${data.settings.phone}`}>
-                <Button size="lg" className="bg-gold-gradient text-maroon hover:opacity-90 font-semibold shadow-gold h-12 px-7">
+                <Button size="lg" className="bg-gold-gradient text-white hover:opacity-90 font-semibold shadow-gold h-12 px-7">
                   <Phone className="mr-2 h-4 w-4" /> {data.settings.phoneDisplay || data.settings.phone}
                 </Button>
               </a>

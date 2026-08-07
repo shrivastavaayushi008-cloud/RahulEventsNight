@@ -84,13 +84,13 @@ export function ContactPage({ data, loading, navigate }: PageProps) {
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="grid sm:grid-cols-2 gap-4">
             {phone && (
-              <a href={`tel:${phone}`} className="group flex items-center gap-4 rounded-2xl bg-festive-gradient border border-gold/30 p-5 transition-all hover:shadow-gold">
-                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gold-gradient text-maroon shadow-gold animate-glow">
+              <a href={`tel:${phone}`} className="group flex items-center gap-4 rounded-2xl bg-maroon-gradient border border-gold/30 p-5 transition-all hover:shadow-lux">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/15 backdrop-blur text-white shadow-lux">
                   <Phone className="h-6 w-6" />
                 </div>
                 <div>
-                  <div className="text-xs uppercase tracking-wider text-foreground/60">Call for Booking</div>
-                  <div className="font-display text-2xl font-bold text-foreground group-hover:text-gold transition-colors">{phoneDisplay}</div>
+                  <div className="text-xs uppercase tracking-wider text-white/70">Call for Booking</div>
+                  <div className="font-display text-xl sm:text-2xl font-bold text-white group-hover:text-gold transition-colors">{phoneDisplay}</div>
                 </div>
               </a>
             )}
@@ -116,8 +116,8 @@ export function ContactPage({ data, loading, navigate }: PageProps) {
             <div className="rounded-3xl border border-gold/15 bg-card p-6 sm:p-8 shadow-lux">
               {success ? (
                 <div className="text-center py-10">
-                  <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-gold-gradient shadow-gold">
-                    <CheckCircle2 className="h-8 w-8 text-maroon" />
+                  <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-maroon-gradient shadow-lux">
+                    <CheckCircle2 className="h-8 w-8 text-white" />
                   </div>
                   <h3 className="font-display text-2xl font-bold">Booking request received!</h3>
                   <p className="mt-2 text-foreground/60 max-w-md mx-auto">
@@ -126,7 +126,7 @@ export function ContactPage({ data, loading, navigate }: PageProps) {
                   <div className="mt-6 flex flex-wrap justify-center gap-3">
                     {phone && (
                       <a href={`tel:${phone}`}>
-                        <Button className="bg-gold-gradient text-maroon hover:opacity-90"><Phone className="mr-2 h-4 w-4" /> Call Now</Button>
+                        <Button className="bg-gold-gradient text-white hover:opacity-90"><Phone className="mr-2 h-4 w-4" /> Call Now</Button>
                       </a>
                     )}
                     <Button onClick={() => setSuccess(false)} variant="outline">Send Another</Button>
@@ -180,12 +180,12 @@ export function ContactPage({ data, loading, navigate }: PageProps) {
                       />
                     </div>
                     <div className="flex flex-col sm:flex-row gap-3">
-                      <Button type="submit" disabled={submitting} className="bg-gold-gradient text-maroon hover:opacity-90 font-semibold shadow-gold h-12 px-6 flex-1">
+                      <Button type="submit" disabled={submitting} className="bg-maroon-gradient text-white hover:opacity-90 font-semibold shadow-lux h-12 px-6 flex-1 btn-shine">
                         {submitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Sending…</> : <><Send className="mr-2 h-4 w-4" /> Send Booking Request</>}
                       </Button>
                       {whatsapp && (
                         <a href={waMsg} target="_blank" rel="noreferrer" className="flex-1 sm:flex-none">
-                          <Button type="button" variant="outline" className="w-full border-whatsapp/40 text-whatsapp hover:bg-whatsapp/10 h-12 px-6">
+                          <Button type="button" className="w-full bg-whatsapp text-white hover:bg-whatsapp/90 font-semibold shadow-lux h-12 px-6">
                             <MessageCircle className="mr-2 h-4 w-4" /> WhatsApp Us
                           </Button>
                         </a>

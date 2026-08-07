@@ -70,7 +70,7 @@ export function GalleryPage({ data, loading, navigate }: PageProps) {
             <button
               onClick={() => setCategory('all')}
               className={cn('px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all',
-                category === 'all' ? 'bg-gold-gradient text-maroon' : 'border border-gold/20 text-foreground/60 hover:border-gold/50 hover:text-gold')}
+                category === 'all' ? 'bg-gold-gradient text-white' : 'border border-gold/20 text-foreground/60 hover:border-gold/50 hover:text-gold')}
             >
               All
             </button>
@@ -79,7 +79,7 @@ export function GalleryPage({ data, loading, navigate }: PageProps) {
                 key={c.key}
                 onClick={() => setCategory(c.key)}
                 className={cn('px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all',
-                  category === c.key ? 'bg-gold-gradient text-maroon' : 'border border-gold/20 text-foreground/60 hover:border-gold/50 hover:text-gold')}
+                  category === c.key ? 'bg-gold-gradient text-white' : 'border border-gold/20 text-foreground/60 hover:border-gold/50 hover:text-gold')}
               >
                 {c.icon} {c.key}
               </button>

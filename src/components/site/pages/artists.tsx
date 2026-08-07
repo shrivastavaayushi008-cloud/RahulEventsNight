@@ -49,7 +49,7 @@ export function ArtistsPage({ data, loading, navigate }: PageProps) {
               key={r}
               onClick={() => setRole(r)}
               className={cn('px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all capitalize',
-                role === r ? 'bg-gold-gradient text-maroon' : 'border border-gold/20 text-foreground/60 hover:border-gold/50 hover:text-gold')}
+                role === r ? 'bg-gold-gradient text-white' : 'border border-gold/20 text-foreground/60 hover:border-gold/50 hover:text-gold')}
             >
               {r === 'all' ? 'All Artists' : r + 's'}
             </button>
@@ -91,7 +91,7 @@ export function ArtistsPage({ data, loading, navigate }: PageProps) {
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             {data.settings.phone && (
               <a href={`tel:${data.settings.phone}`}>
-                <Button size="lg" className="bg-gold-gradient text-maroon hover:opacity-90 font-semibold shadow-gold h-12 px-7">
+                <Button size="lg" className="bg-gold-gradient text-white hover:opacity-90 font-semibold shadow-gold h-12 px-7">
                   <Phone className="mr-2 h-4 w-4" /> {data.settings.phoneDisplay || data.settings.phone}
                 </Button>
               </a>
@@ -125,7 +125,7 @@ function ArtistCard({ artist, navigate }: { artist: Artist; navigate: (r: Route)
         {artist.phone && (
           <a
             href={`tel:${artist.phone}`}
-            className="absolute bottom-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-gold-gradient text-maroon opacity-0 group-hover:opacity-100 transition-opacity"
+            className="absolute bottom-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-gold-gradient text-white opacity-0 group-hover:opacity-100 transition-opacity"
             aria-label={`Call ${artist.name}`}
             onClick={e => e.stopPropagation()}
           >

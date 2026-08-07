@@ -145,8 +145,22 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "ss01";
+    font-feature-settings: "ss01", "cv11";
     transition: background-color 0.3s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-playfair-display), serif;
+    letter-spacing: -0.02em;
+  }
+  .font-hindi, [class*="font-hindi"] {
+    font-family: var(--font-tiro-devanagari), var(--font-playfair-display), serif !important;
+  }
+  /* Better focus states */
+  *:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
   }
 }
 
@@ -164,7 +178,7 @@
   .font-display { font-family: var(--font-playfair-display), serif; }
 
   .text-gradient-gold {
-    background: linear-gradient(135deg, oklch(0.55 0.13 20) 0%, oklch(0.45 0.15 30) 50%, oklch(0.4 0.13 20) 100%);
+    background: linear-gradient(135deg, oklch(0.5 0.14 50) 0%, oklch(0.55 0.16 60) 50%, oklch(0.45 0.13 40) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -176,13 +190,13 @@
     -webkit-text-fill-color: transparent;
   }
   .bg-gold-gradient {
-    background: linear-gradient(135deg, oklch(0.55 0.13 20) 0%, oklch(0.45 0.15 30) 50%, oklch(0.4 0.13 20) 100%);
+    background: linear-gradient(135deg, oklch(0.55 0.14 50) 0%, oklch(0.6 0.16 60) 50%, oklch(0.5 0.13 40) 100%);
   }
   .dark .bg-gold-gradient {
     background: linear-gradient(135deg, oklch(0.92 0.12 84) 0%, oklch(0.82 0.15 84) 50%, oklch(0.72 0.13 75) 100%);
   }
   .bg-maroon-gradient {
-    background: linear-gradient(135deg, oklch(0.4 0.13 20) 0%, oklch(0.3 0.1 350) 100%);
+    background: linear-gradient(135deg, oklch(0.45 0.15 25) 0%, oklch(0.35 0.12 350) 100%);
   }
   .bg-festive-gradient {
     background: linear-gradient(135deg, oklch(0.96 0.02 60) 0%, oklch(0.93 0.04 40) 50%, oklch(0.96 0.02 60) 100%);

@@ -46,7 +46,7 @@ export function VideosPage({ data, loading, navigate }: PageProps) {
               key={c}
               onClick={() => setCategory(c)}
               className={cn('px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all capitalize',
-                category === c ? 'bg-gold-gradient text-maroon' : 'border border-gold/20 text-foreground/60 hover:border-gold/50 hover:text-gold')}
+                category === c ? 'bg-gold-gradient text-white' : 'border border-gold/20 text-foreground/60 hover:border-gold/50 hover:text-gold')}
             >
               {c === 'all' ? 'All Videos' : c}
             </button>
@@ -81,7 +81,7 @@ export function VideosPage({ data, loading, navigate }: PageProps) {
                     />
                     <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors flex items-center justify-center">
                       <div className="h-14 w-14 rounded-full bg-gold-gradient flex items-center justify-center shadow-gold group-hover:scale-110 transition-transform">
-                        <Play className="h-6 w-6 text-maroon fill-maroon ml-0.5" />
+                        <Play className="h-6 w-6 text-white fill-white ml-0.5" />
                       </div>
                     </div>
                     <div className="absolute top-2 left-2">
@@ -110,7 +110,7 @@ export function VideosPage({ data, loading, navigate }: PageProps) {
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             {data.settings.phone && (
               <a href={`tel:${data.settings.phone}`}>
-                <Button size="lg" className="bg-gold-gradient text-maroon hover:opacity-90 font-semibold shadow-gold h-12 px-7">
+                <Button size="lg" className="bg-gold-gradient text-white hover:opacity-90 font-semibold shadow-gold h-12 px-7">
                   <Phone className="mr-2 h-4 w-4" /> {data.settings.phoneDisplay || data.settings.phone}
                 </Button>
               </a>
