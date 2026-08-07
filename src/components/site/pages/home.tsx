@@ -51,24 +51,28 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
           alt="RahulEventsNight Banner"
           className="h-full w-full object-cover object-center animate-kenburns"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/60" />
+        {/* Strong left-to-right dark gradient so left text area is always readable */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-black/50" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-20 w-full">
         <div className="max-w-2xl animate-fade-up">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold/15 backdrop-blur border border-gold/40 mb-5">
-            <Sparkles className="h-3.5 w-3.5 text-gold" />
-            <span className="font-hindi text-sm text-gold">{settings.taglineHindi || 'हर पल यादगार, हर इवेंट शानदार'}</span>
+          {/* Tagline pill - solid dark background for contrast */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/70 backdrop-blur border border-gold/50 mb-5">
+            <Sparkles className="h-4 w-4 text-gold shrink-0" />
+            <span className="font-hindi text-sm font-bold text-gold">{settings.taglineHindi || 'हर पल यादगार, हर इवेंट शानदार'}</span>
           </div>
 
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.05] text-white drop-shadow-2xl">
-            Rahul<span className="text-gradient-gold">EventsNight</span>
+          {/* Main heading - solid white, extra bold, with strong shadow */}
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-[1.05] text-white hero-text-shadow">
+            RahulEventsNight
           </h1>
-          <p className="mt-2 font-hindi text-lg sm:text-xl lg:text-2xl text-gold drop-shadow-lg">
+          <p className="mt-3 font-hindi text-xl sm:text-2xl lg:text-3xl font-bold text-gold hero-text-shadow">
             राहुल इवेंट्स नाईट
           </p>
 
-          <p className="mt-5 text-sm sm:text-base lg:text-lg text-white/90 leading-relaxed max-w-xl drop-shadow-lg">
+          <p className="mt-5 text-sm sm:text-base lg:text-lg font-medium text-white leading-relaxed max-w-xl hero-text-shadow">
             Jagran · Hanuman Aradhna · Track Singing · Wedding Song Events —
             professional live performances for every celebration.
           </p>
@@ -78,7 +82,7 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
             <Button
               onClick={() => navigate('contact')}
               size="lg"
-              className="btn-shine bg-gold-gradient text-white hover:opacity-90 font-semibold shadow-gold h-11 sm:h-12 px-6 sm:px-7"
+              className="btn-shine bg-gold-gradient text-white hover:opacity-90 font-bold shadow-gold h-11 sm:h-12 px-6 sm:px-7 text-base"
             >
               Book Now <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
@@ -86,7 +90,7 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
               <a href={waLink} target="_blank" rel="noreferrer">
                 <Button
                   size="lg"
-                  className="bg-whatsapp text-white hover:bg-whatsapp/90 font-semibold shadow-lux h-11 sm:h-12 px-6 sm:px-7"
+                  className="bg-whatsapp text-white hover:bg-whatsapp/90 font-bold shadow-lux h-11 sm:h-12 px-6 sm:px-7 text-base"
                 >
                   <MessageCircle className="mr-2 h-4 w-4" /> WhatsApp Booking
                 </Button>
@@ -94,26 +98,26 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
             )}
           </div>
 
-          {/* Phone prominent */}
+          {/* Phone prominent - solid dark pill behind for readability */}
           {phone && (
-            <div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
-              <a href={`tel:${settings.phone}`} className="group flex items-center gap-3">
-                <span className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-gold-gradient text-white shadow-gold animate-glow">
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <a href={`tel:${settings.phone}`} className="group flex items-center gap-3 px-4 py-2.5 rounded-xl bg-black/60 backdrop-blur border border-white/10 hover:border-gold/50 transition-colors">
+                <span className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-gold-gradient text-white shadow-gold animate-glow shrink-0">
                   <Phone className="h-5 w-5" />
                 </span>
                 <span>
-                  <span className="block text-[10px] sm:text-xs text-white/60 uppercase tracking-wider">Call for Booking</span>
-                  <span className="block font-display text-lg sm:text-xl font-bold text-white group-hover:text-gold transition-colors">{phone}</span>
+                  <span className="block text-[10px] sm:text-xs font-bold text-gold uppercase tracking-wider">Call for Booking</span>
+                  <span className="block font-display text-lg sm:text-xl font-extrabold text-white">{phone}</span>
                 </span>
               </a>
               {whatsapp && (
-                <a href={waLink} target="_blank" rel="noreferrer" className="group flex items-center gap-3">
-                  <span className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-whatsapp text-white shadow-lux">
+                <a href={waLink} target="_blank" rel="noreferrer" className="group flex items-center gap-3 px-4 py-2.5 rounded-xl bg-black/60 backdrop-blur border border-white/10 hover:border-whatsapp/50 transition-colors">
+                  <span className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-whatsapp text-white shadow-lux shrink-0">
                     <MessageCircle className="h-5 w-5" />
                   </span>
                   <span>
-                    <span className="block text-[10px] sm:text-xs text-white/60 uppercase tracking-wider">WhatsApp</span>
-                    <span className="block font-display text-lg sm:text-xl font-bold text-white group-hover:text-whatsapp transition-colors">+91 {whatsapp}</span>
+                    <span className="block text-[10px] sm:text-xs font-bold text-whatsapp uppercase tracking-wider">WhatsApp</span>
+                    <span className="block font-display text-lg sm:text-xl font-extrabold text-white">+91 {whatsapp}</span>
                   </span>
                 </a>
               )}
@@ -122,8 +126,8 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
         </div>
       </div>
 
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2 text-white/50">
-        <span className="text-[10px] uppercase tracking-[0.3em]">Scroll</span>
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2">
+        <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold hero-text-shadow">Scroll</span>
         <span className="h-10 w-px bg-gradient-to-b from-gold to-transparent animate-bounce-subtle" />
       </div>
     </section>
