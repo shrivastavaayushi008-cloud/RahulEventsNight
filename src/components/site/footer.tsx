@@ -19,7 +19,7 @@ export function Footer({ navigate, settings }: FooterProps) {
   const waLink = whatsapp ? `https://wa.me/91${whatsapp}` : '#';
 
   return (
-    <footer className="mt-auto bg-card border-t border-gold/20">
+    <footer className="mt-auto bg-maroon-gradient border-t border-gold/30 text-white">
       <div className="mx-auto max-w-7xl px-4 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
@@ -29,7 +29,7 @@ export function Footer({ navigate, settings }: FooterProps) {
                 <Image src="/logo.png" alt="Logo" fill className="object-cover" />
               </span>
               <div>
-                <div className="font-display text-lg font-bold text-foreground">
+                <div className="font-display text-lg font-bold text-white">
                   Rahul<span className="text-gradient-gold">EventsNight</span>
                 </div>
                 {settings.companyNameHindi && (
@@ -37,7 +37,7 @@ export function Footer({ navigate, settings }: FooterProps) {
                 )}
               </div>
             </div>
-            <p className="text-sm text-foreground/60 leading-relaxed">
+            <p className="text-sm text-white/70 leading-relaxed">
               {settings.tagline} — {settings.taglineHindi}
             </p>
             <p className="mt-2 font-hindi text-sm text-maroon">{settings.tagline2}</p>
@@ -74,7 +74,7 @@ export function Footer({ navigate, settings }: FooterProps) {
                 ['contact', 'Contact'],
               ] as [Route, string][]).map(([r, label]) => (
                 <li key={r}>
-                  <button onClick={() => navigate(r)} className="text-foreground/60 hover:text-gold hover:translate-x-1 transition-all inline-block">
+                  <button onClick={() => navigate(r)} className="text-white/70 hover:text-gold hover:translate-x-1 transition-all inline-block">
                     {label}
                   </button>
                 </li>
@@ -85,7 +85,7 @@ export function Footer({ navigate, settings }: FooterProps) {
           {/* Events */}
           <div>
             <h4 className="text-xs uppercase tracking-[0.25em] text-gold font-medium mb-4">Our Events</h4>
-            <ul className="space-y-2.5 text-sm text-foreground/60">
+            <ul className="space-y-2.5 text-sm text-white/70">
               <li>🛕 Jagran & Hanuman Aradhna</li>
               <li>🎤 Track Singing & Live Singing</li>
               <li>💍 Wedding & Sangeet Night</li>
@@ -98,14 +98,14 @@ export function Footer({ navigate, settings }: FooterProps) {
           {/* Contact */}
           <div>
             <h4 className="text-xs uppercase tracking-[0.25em] text-gold font-medium mb-4">Contact & Booking</h4>
-            <ul className="space-y-3 text-sm text-foreground/60">
+            <ul className="space-y-3 text-sm text-white/70">
               {phoneDisplay && (
                 <li>
                   <a href={`tel:${phone}`} className="flex items-start gap-2.5 hover:text-gold transition-colors group">
                     <Phone className="h-4 w-4 text-gold mt-0.5 shrink-0 group-hover:scale-110 transition-transform" />
                     <span>
-                      <div className="text-xs text-foreground/40">Call</div>
-                      <div className="font-semibold text-foreground">{phoneDisplay}</div>
+                      <div className="text-xs text-white/50">Call</div>
+                      <div className="font-semibold text-white">{phoneDisplay}</div>
                     </span>
                   </a>
                 </li>
@@ -115,8 +115,8 @@ export function Footer({ navigate, settings }: FooterProps) {
                   <a href={waLink} target="_blank" rel="noreferrer" className="flex items-start gap-2.5 hover:text-whatsapp transition-colors group">
                     <MessageCircle className="h-4 w-4 text-whatsapp mt-0.5 shrink-0 group-hover:scale-110 transition-transform" />
                     <span>
-                      <div className="text-xs text-foreground/40">WhatsApp</div>
-                      <div className="font-semibold text-foreground">+91 {whatsapp}</div>
+                      <div className="text-xs text-white/50">WhatsApp</div>
+                      <div className="font-semibold text-white">+91 {whatsapp}</div>
                     </span>
                   </a>
                 </li>
@@ -144,7 +144,7 @@ export function Footer({ navigate, settings }: FooterProps) {
         </div>
 
         <div className="mt-12 pt-6 border-t border-gold/10 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-foreground/40">
+          <p className="text-xs text-white/50">
             © {year} RahulEventsNight. All rights reserved.
           </p>
           <p className="font-hindi text-xs text-gold/70">आपका विश्वास, हमारी पहचान</p>
