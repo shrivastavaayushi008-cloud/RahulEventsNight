@@ -1,0 +1,9 @@
+{
+  "buildCommand": "cp prisma/schema.prod.prisma prisma/schema.prisma && prisma generate && next build",
+  "framework": "nextjs",
+  "regions": ["bom1"],
+  "env": {
+    "DATABASE_URL": "mongodb+srv://shrivastavaayushi008_db_user:Cool0209@cluster0.mszrpmd.mongodb.net/RahulEventsNight?retryWrites=true&w=majority&appName=Cluster0",
+    "JWT_SECRET": "rahul-events-night-jwt-secret-2026-change-in-production"
+  }
+}

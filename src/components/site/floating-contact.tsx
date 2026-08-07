@@ -10,14 +10,14 @@ export function FloatingContact({ settings }: { settings: SiteSettings }) {
   const waLink = whatsapp ? `https://wa.me/91${whatsapp}` : '#';
 
   return (
-    <div className="fixed bottom-4 right-4 z-40 flex flex-col gap-2.5">
+    <div className="fixed bottom-3 right-3 sm:bottom-4 sm:right-4 z-40 flex flex-col gap-2">
       {phone && (
         <a
           href={`tel:${phone}`}
-          className="group flex h-12 w-12 lg:h-14 lg:w-14 items-center justify-center rounded-full bg-gold-gradient text-white shadow-gold animate-glow transition-transform hover:scale-110"
+          className="group flex h-10 w-10 sm:h-12 sm:w-12 lg:h-14 lg:w-14 items-center justify-center rounded-full bg-gold-gradient text-white shadow-gold animate-glow transition-transform hover:scale-110"
           aria-label="Call now"
         >
-          <Phone className="h-5 w-5 lg:h-6 lg:w-6" />
+          <Phone className="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6" />
         </a>
       )}
       {whatsapp && (
@@ -25,10 +25,10 @@ export function FloatingContact({ settings }: { settings: SiteSettings }) {
           href={waLink}
           target="_blank"
           rel="noreferrer"
-          className="group flex h-12 w-12 lg:h-14 lg:w-14 items-center justify-center rounded-full bg-whatsapp text-white shadow-lux transition-transform hover:scale-110"
+          className="group flex h-10 w-10 sm:h-12 sm:w-12 lg:h-14 lg:w-14 items-center justify-center rounded-full bg-whatsapp text-white shadow-lux transition-transform hover:scale-110"
           aria-label="WhatsApp us"
         >
-          <MessageCircle className="h-5 w-5 lg:h-6 lg:w-6" />
+          <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6" />
         </a>
       )}
     </div>
