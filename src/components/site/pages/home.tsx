@@ -44,12 +44,14 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
 
   return (
     <section className="relative min-h-[100svh] flex items-center overflow-hidden bg-black">
-      {/* Banner background */}
+      {/* Banner background - static, no motion */}
       <div className="absolute inset-0">
         <img
-          src="/images/hero/banner.png"
+          src="/images/hero/banner.jpg"
           alt="RahulEventsNight Banner"
-          className="h-full w-full object-cover object-[center_30%] sm:object-left animate-kenburns"
+          className="h-full w-full object-cover object-[center_30%] sm:object-left"
+          loading="eager"
+          fetchPriority="high"
         />
         {/* Dark overlay for text readability - stronger on mobile */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/60 sm:via-black/30 sm:to-black/50" />
@@ -195,7 +197,7 @@ function Categories({ navigate, settings }: { navigate: (r: Route) => void; sett
                   {img ? (
                     <>
                       <div className="relative aspect-[4/3] overflow-hidden">
-                        <img src={img} alt={cat.label} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                        <img src={img} alt={cat.label} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                       </div>
                       <div className="absolute bottom-0 inset-x-0 p-3 text-left">
@@ -278,7 +280,7 @@ function FeaturedEventCard({ event, navigate, large }: { event: EventItem; navig
       )}
     >
       <div className={cn('relative overflow-hidden', large ? 'aspect-[16/10]' : 'aspect-[4/3]')}>
-        <img src={event.coverImage} alt={event.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+        <img src={event.coverImage} alt={event.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
         {/* Subtle dark gradient only at bottom for text legibility - no white wash */}
         <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
         <div className="absolute top-3 left-3">
@@ -418,7 +420,7 @@ function ArtistsPreview({ artists, loading, navigate }: { artists: Artist[]; loa
                   className="group w-full rounded-2xl border border-gold/15 bg-background overflow-hidden text-left transition-all hover:-translate-y-2 hover:shadow-lux card-lift"
                 >
                   <div className="relative aspect-square overflow-hidden img-zoom">
-                    <img src={a.avatar} alt={a.name} className="h-full w-full object-cover object-top" />
+                    <img src={a.avatar} alt={a.name} className="h-full w-full object-cover object-top" loading="lazy" />
                     {a.featured && (
                       <span className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-gold-gradient px-2 py-0.5 text-[10px] font-bold text-white">
                         <Star className="h-2.5 w-2.5 fill-white" /> Top
@@ -464,7 +466,7 @@ function GalleryPreview({ data, loading, navigate }: { data: SiteData; loading: 
                 onClick={() => navigate('gallery')}
                 className="group relative aspect-square overflow-hidden rounded-xl border border-gold/15 bg-card"
               >
-                <img src={g.thumbnail || g.url} alt={g.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <img src={g.thumbnail || g.url} alt={g.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
                 <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <Play className="h-6 w-6 text-gold" />
                 </div>

@@ -386,7 +386,7 @@ function EventsTab() {
           {items.map(e => (
             <div key={e.id} className="rounded-2xl border border-gold/15 bg-card overflow-hidden">
               <div className="relative aspect-video">
-                <img src={e.coverImage} alt={e.title} className="h-full w-full object-cover" />
+                <img src={e.coverImage} alt={e.title} className="h-full w-full object-cover" loading="lazy" />
                 <div className="absolute top-2 left-2 flex gap-1.5">
                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-gold-gradient text-white font-semibold">{e.category}</span>
                   {e.featured && <span className="text-[10px] px-2 py-0.5 rounded-full bg-maroon/70 text-gold">★</span>}
@@ -413,7 +413,7 @@ function EventModal({ event, onClose, onSaved }: { event: any; onClose: () => vo
   const [form, setForm] = useState({
     title: event?.title || '', slug: event?.slug || '', category: event?.category || 'Spiritual',
     subCategory: event?.subCategory || '', description: event?.description || '', longDesc: event?.longDesc || '',
-    coverImage: event?.coverImage || '/images/events/jagran.png', eventDate: event?.eventDate || '', location: event?.location || '',
+    coverImage: event?.coverImage || '/images/events/jagran.jpg', eventDate: event?.eventDate || '', location: event?.location || '',
     featured: event?.featured || false, published: event?.published ?? true,
   });
   const [saving, setSaving] = useState(false);
@@ -507,7 +507,7 @@ function GalleryTab() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {items.map(g => (
             <div key={g.id} className="group relative rounded-xl overflow-hidden border border-gold/15 bg-card aspect-square">
-              <img src={g.thumbnail || g.url} alt={g.title} className="h-full w-full object-cover" />
+              <img src={g.thumbnail || g.url} alt={g.title} className="h-full w-full object-cover" loading="lazy" />
               <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-3">
                 <div className="flex justify-end gap-1">
                   <button onClick={() => remove(g.id)} className="p-1.5 rounded-md bg-red-500/80 text-white hover:bg-red-500" aria-label="Delete"><Trash2 className="h-3.5 w-3.5" /></button>
@@ -530,7 +530,7 @@ function GalleryTab() {
 function GalleryModal({ onClose, onSaved }: { onClose: () => void; onSaved: () => void }) {
   const [form, setForm] = useState({
     title: '', category: 'Spiritual', type: 'photo' as 'photo' | 'video',
-    url: '/images/events/jagran.png', thumbnail: '', youtubeId: '', description: '', eventDate: '', location: '', published: true,
+    url: '/images/events/jagran.jpg', thumbnail: '', youtubeId: '', description: '', eventDate: '', location: '', published: true,
   });
   const [saving, setSaving] = useState(false);
   const { toast } = useToast();
@@ -627,7 +627,7 @@ function ArtistsTab() {
           {items.map(a => (
             <div key={a.id} className="rounded-2xl border border-gold/15 bg-card overflow-hidden">
               <div className="aspect-square relative">
-                <img src={a.avatar} alt={a.name} className="h-full w-full object-cover" />
+                <img src={a.avatar} alt={a.name} className="h-full w-full object-cover" loading="lazy" />
                 {a.featured && <span className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-gold-gradient px-2 py-0.5 text-[10px] font-bold text-white"><Star className="h-2.5 w-2.5 fill-white" /> Top</span>}
               </div>
               <div className="p-3">
@@ -649,7 +649,7 @@ function ArtistsTab() {
 }
 
 function ArtistModal({ onClose, onSaved }: { onClose: () => void; onSaved: () => void }) {
-  const [form, setForm] = useState({ name: '', role: 'Singer', specialty: '', bio: '', avatar: '/images/artists/artist-1.png', phone: '', order: 0, featured: false, published: true });
+  const [form, setForm] = useState({ name: '', role: 'Singer', specialty: '', bio: '', avatar: '/images/artists/artist-1.jpg', phone: '', order: 0, featured: false, published: true });
   const [saving, setSaving] = useState(false);
   const { toast } = useToast();
 
@@ -736,7 +736,7 @@ function VideosTab() {
           {items.map(v => (
             <div key={v.id} className="rounded-2xl border border-gold/15 bg-card overflow-hidden">
               <div className="relative aspect-video">
-                <img src={v.thumbnail || `https://img.youtube.com/vi/${v.youtubeId}/maxresdefault.jpg`} alt={v.title} className="h-full w-full object-cover" />
+                <img src={v.thumbnail || `https://img.youtube.com/vi/${v.youtubeId}/maxresdefault.jpg`} alt={v.title} className="h-full w-full object-cover" loading="lazy" />
                 <div className="absolute top-2 left-2"><span className="text-[10px] px-2 py-0.5 rounded-full bg-maroon/80 backdrop-blur text-gold font-semibold">{v.category}</span></div>
               </div>
               <div className="p-4">
@@ -864,7 +864,7 @@ function UpcomingTab() {
 }
 
 function UpcomingModal({ onClose, onSaved }: { onClose: () => void; onSaved: () => void }) {
-  const [form, setForm] = useState({ title: '', category: 'Spiritual', eventDate: '', eventTime: '', venue: '', city: '', description: '', coverImage: '/images/events/jagran.png', bookingOpen: true, published: true });
+  const [form, setForm] = useState({ title: '', category: 'Spiritual', eventDate: '', eventTime: '', venue: '', city: '', description: '', coverImage: '/images/events/jagran.jpg', bookingOpen: true, published: true });
   const [saving, setSaving] = useState(false);
   const { toast } = useToast();
 
@@ -1148,7 +1148,7 @@ function SettingsTab() {
               </div>
               {categoryImages[cat.key] ? (
                 <div className="relative mb-3 rounded-lg overflow-hidden aspect-[4/3]">
-                  <img src={categoryImages[cat.key]} alt={cat.label} className="h-full w-full object-cover" />
+                  <img src={categoryImages[cat.key]} alt={cat.label} className="h-full w-full object-cover" loading="lazy" />
                   <button
                     onClick={() => setCategoryImage(cat.key, '')}
                     className="absolute top-1 right-1 p-1.5 rounded-md bg-red-500/80 text-white hover:bg-red-500"

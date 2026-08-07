@@ -115,7 +115,7 @@ function ArtistCard({ artist, navigate }: { artist: Artist; navigate: (r: Route)
   return (
     <div className="group rounded-2xl border border-gold/15 bg-card overflow-hidden transition-all hover:-translate-y-1 hover:shadow-lux">
       <div className="relative aspect-[3/4] overflow-hidden">
-        <img src={artist.avatar} alt={artist.name} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+        <img src={artist.avatar} alt={artist.name} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
         {artist.featured && (
           <span className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-gold-gradient px-2 py-0.5 text-[10px] font-bold text-maroon">
             <Star className="h-2.5 w-2.5 fill-maroon" /> Top
