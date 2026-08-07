@@ -49,7 +49,7 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
         <img
           src="/images/hero/banner.jpg"
           alt="RahulEventsNight Banner"
-          className="h-full w-full object-cover object-[center_30%] sm:object-left"
+          className="h-full w-full object-cover object-center sm:object-left"
           loading="eager"
           fetchPriority="high"
         />
@@ -58,7 +58,7 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 sm:pt-28 pb-16 sm:pb-20 w-full">
-        <div className="max-w-2xl animate-fade-up">
+        <div className="max-w-2xl">
           {/* Tagline pill */}
           <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-black/70 backdrop-blur border border-gold/50 mb-4 sm:mb-5">
             <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-gold shrink-0" />
@@ -98,32 +98,6 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
               </a>
             )}
           </div>
-
-          {/* Phone/WhatsApp quick contact - compact on mobile */}
-          {phone && (
-            <div className="mt-5 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 max-w-xl">
-              <a href={`tel:${settings.phone}`} className="group flex items-center gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-black/60 backdrop-blur border border-white/10 hover:border-gold/50 transition-colors">
-                <span className="flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-gold-gradient text-white shadow-gold shrink-0">
-                  <Phone className="h-4 w-4 sm:h-5 sm:w-5" />
-                </span>
-                <span className="min-w-0">
-                  <span className="block text-[10px] font-bold text-gold uppercase tracking-wider">Call</span>
-                  <span className="block font-display text-sm sm:text-lg font-extrabold text-white truncate">{phone}</span>
-                </span>
-              </a>
-              {whatsapp && (
-                <a href={waLink} target="_blank" rel="noreferrer" className="group flex items-center gap-3 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-black/60 backdrop-blur border border-white/10 hover:border-whatsapp/50 transition-colors">
-                  <span className="flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-whatsapp text-white shadow-lux shrink-0">
-                    <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5" />
-                  </span>
-                  <span className="min-w-0">
-                    <span className="block text-[10px] font-bold text-whatsapp uppercase tracking-wider">WhatsApp</span>
-                    <span className="block font-display text-sm sm:text-lg font-extrabold text-white truncate">+91 {whatsapp}</span>
-                  </span>
-                </a>
-              )}
-            </div>
-          )}
         </div>
       </div>
 
