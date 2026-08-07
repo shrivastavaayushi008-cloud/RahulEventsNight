@@ -392,7 +392,6 @@ function ArtistsPreview({ artists, loading, navigate }: { artists: Artist[]; loa
                 >
                   <div className="relative aspect-[3/4] overflow-hidden img-zoom">
                     <img src={a.avatar} alt={a.name} className="h-full w-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
                     {a.featured && (
                       <span className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-gold-gradient px-2 py-0.5 text-[10px] font-bold text-white">
                         <Star className="h-2.5 w-2.5 fill-white" /> Top
