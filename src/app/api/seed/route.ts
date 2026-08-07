@@ -7,18 +7,17 @@ import bcrypt from 'bcryptjs';
 export async function GET(_req: NextRequest) {
   try {
     // Always upsert admin user (so password can be reset if needed)
-    const existingAdmin = await db.adminUser.findUnique({ where: { email: 'admin@rahuleventsnight.com' } }).catch(() => null);
-    if (!existingAdmin) {
-      const passwordHash = await bcrypt.hash('admin123', 10);
-      await db.adminUser.create({
-        data: {
-          email: 'admin@rahuleventsnight.com',
-          name: 'Rahul',
-          password: passwordHash,
-          role: 'admin',
-        },
-      }).catch(() => {});
-    }
+    const passwordHash = await bcrypt.hash('admin123', 10);
+    await db.adminUser.upsert({
+      where: { email: 'admin@rahuleventsnight.com' },
+      update: { password: passwordHash, name: 'Rahul' },
+      create: {
+        email: 'admin@rahuleventsnight.com',
+        name: 'Rahul',
+        password: passwordHash,
+        role: 'admin',
+      },
+    }).catch((e) => console.error('Admin upsert error:', e.message));
 
     // Events
     const events = [
