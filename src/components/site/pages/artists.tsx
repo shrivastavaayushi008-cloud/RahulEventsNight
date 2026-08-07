@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Phone, MessageCircle, Star, Youtube, Instagram, Facebook, Mic, Music, Users as UsersIcon, User } from 'lucide-react';
+import { Phone, MessageCircle, Star, Youtube, Instagram, Facebook, Mic, Music, Users as UsersIcon, User, Briefcase } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SectionHeading } from '@/components/site/section-heading';
 import type { SiteData } from '@/hooks/use-site-data';
@@ -14,12 +14,13 @@ interface PageProps {
   navigate: (r: Route, p?: string) => void;
 }
 
-const ROLE_FILTERS = ['all', 'Singer', 'Anchor', 'Musician', 'Band Member'];
+const ROLE_FILTERS = ['all', 'Singer', 'Anchor', 'Musician', 'Band Member', 'Organiser'];
 const ROLE_ICONS: Record<string, any> = {
   Singer: Mic,
   Anchor: User,
   Musician: Music,
   'Band Member': UsersIcon,
+  Organiser: Briefcase,
 };
 
 export function ArtistsPage({ data, loading, navigate }: PageProps) {

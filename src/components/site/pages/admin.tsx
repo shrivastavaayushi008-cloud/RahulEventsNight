@@ -775,7 +775,7 @@ function ArtistModal({ onClose, onSaved }: { onClose: () => void; onSaved: () =>
             <div className="space-y-2">
               <Label>Role</Label>
               <select value={form.role} onChange={e => setForm({ ...form, role: e.target.value })} className="flex h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
-                {['Singer', 'Anchor', 'Musician', 'Band Member'].map(r => <option key={r}>{r}</option>)}
+                {['Singer', 'Anchor', 'Musician', 'Band Member', 'Organiser'].map(r => <option key={r}>{r}</option>)}
               </select>
             </div>
           </div>
