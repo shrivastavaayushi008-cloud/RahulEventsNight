@@ -24,7 +24,6 @@ export function HomePage({ data, loading, navigate }: PageProps) {
   return (
     <>
       <Hero settings={data.settings} navigate={navigate} />
-      <Stats settings={data.settings} />
       <Categories navigate={navigate} />
       <FeaturedEvents events={data.events} loading={loading} navigate={navigate} />
       <UpcomingEvents upcoming={data.upcoming} loading={loading} settings={data.settings} />
@@ -32,6 +31,7 @@ export function HomePage({ data, loading, navigate }: PageProps) {
       <GalleryPreview data={data} loading={loading} navigate={navigate} />
       <ContactCTA settings={data.settings} navigate={navigate} />
       <Testimonials testimonials={data.testimonials} loading={loading} />
+      <Stats settings={data.settings} />
     </>
   );
 }
