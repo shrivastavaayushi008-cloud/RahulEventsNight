@@ -12,25 +12,74 @@ interface ImageUploadProps {
   folder?: string;
   aspect?: string; // e.g. 'aspect-square', 'aspect-[4/3]'
   className?: string;
+  maxWidth?: number; // max width in px for auto resize
+  quality?: number; // JPEG quality 0-100
 }
 
-export function ImageUpload({ label, value, onChange, folder = 'misc', aspect = 'aspect-[4/3]', className }: ImageUploadProps) {
+/**
+ * Client-side image upload with auto-resize.
+ * Converts image to base64 data URL (works on Vercel - no filesystem needed).
+ * Automatically resizes large images to maxWidth and compresses to JPEG.
+ */
+export function ImageUpload({
+  label,
+  value,
+  onChange,
+  folder = 'misc',
+  aspect = 'aspect-[4/3]',
+  className,
+  maxWidth = 800,
+  quality = 75,
+}: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const handleUpload = async (file: File) => {
+  const handleFile = async (file: File) => {
     setUploading(true);
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('folder', folder);
-      const res = await fetch('/api/upload', { method: 'POST', body: formData, credentials: 'include' });
-      if (!res.ok) throw new Error('Upload failed');
-      const data = await res.json();
-      onChange(data.url);
+      // Read file as data URL
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          // Auto resize
+          const canvas = document.createElement('canvas');
+          let { width, height } = img;
+
+          // Resize if wider than maxWidth
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            // Fallback: use original
+            onChange(e.target?.result as string);
+            setUploading(false);
+            return;
+          }
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Convert to JPEG (smaller size) unless PNG with transparency
+          const dataUrl = canvas.toDataURL('image/jpeg', quality / 100);
+          onChange(dataUrl);
+          setUploading(false);
+        };
+        img.onerror = () => {
+          onChange(e.target?.result as string);
+          setUploading(false);
+        };
+        img.src = e.target?.result as string;
+      };
+      reader.onerror = () => {
+        setUploading(false);
+      };
+      reader.readAsDataURL(file);
     } catch (e: any) {
-      console.error('Upload error:', e.message);
-    } finally {
+      console.error('Image processing error:', e.message);
       setUploading(false);
     }
   };
@@ -68,7 +117,8 @@ export function ImageUpload({ label, value, onChange, folder = 'misc', aspect = 
           className="hidden"
           onChange={(e) => {
             const file = e.target.files?.[0];
-            if (file) handleUpload(file);
+            if (file) handleFile(file);
+            e.target.value = ''; // reset so same file can be selected again
           }}
         />
         <button
@@ -81,7 +131,7 @@ export function ImageUpload({ label, value, onChange, folder = 'misc', aspect = 
           Upload
         </button>
         <Input
-          value={value}
+          value={value.startsWith('data:') ? '(uploaded image)' : value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="or paste URL"
           className="text-xs h-9"

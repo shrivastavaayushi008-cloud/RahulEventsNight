@@ -357,6 +357,8 @@ function EventsTab() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<any | null>(null);
   const [creating, setCreating] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [deleting, setDeleting] = useState(false);
   const { toast } = useToast();
 
   const load = useCallback(() => {
@@ -371,27 +373,56 @@ function EventsTab() {
     toast({ title: 'Event deleted' }); load();
   };
 
+  const toggleSelect = (id: string) => {
+    const next = new Set(selected);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setSelected(next);
+  };
+
+  const deleteSelected = async () => {
+    if (selected.size === 0 || !confirm(`Delete ${selected.size} selected events?`)) return;
+    setDeleting(true);
+    for (const id of selected) {
+      await fetch(`/api/admin/events/${id}`, { method: 'DELETE', credentials: 'include' });
+    }
+    toast({ title: `${selected.size} events deleted` });
+    setSelected(new Set());
+    setDeleting(false);
+    load();
+  };
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="font-display text-2xl sm:text-3xl font-bold">Events</h1>
-          <p className="text-sm text-foreground/60">{items.length} events</p>
+          <p className="text-sm text-foreground/60">{items.length} events {selected.size > 0 && `· ${selected.size} selected`}</p>
         </div>
-        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Event</Button>
+        <div className="flex gap-2">
+          {selected.size > 0 && (
+            <Button onClick={deleteSelected} disabled={deleting} variant="outline" className="text-red-400 border-red-400/30 hover:bg-red-500/10">
+              {deleting ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Trash2 className="h-4 w-4 mr-1" />}
+              Delete ({selected.size})
+            </Button>
+          )}
+          <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Event</Button>
+        </div>
       </div>
       {loading ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">{Array.from({ length: 6 }).map((_, i) => <div key={i} className="h-48 rounded-2xl bg-card animate-pulse" />)}</div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map(e => (
-            <div key={e.id} className="rounded-2xl border border-gold/15 bg-card overflow-hidden">
+            <div key={e.id} className={cn('rounded-2xl border bg-card overflow-hidden transition-all', selected.has(e.id) ? 'border-gold ring-2 ring-gold/30' : 'border-gold/15')}>
               <div className="relative aspect-video">
                 <img src={e.coverImage} alt={e.title} className="h-full w-full object-cover" loading="lazy" />
                 <div className="absolute top-2 left-2 flex gap-1.5">
                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-gold-gradient text-white font-semibold">{e.category}</span>
                   {e.featured && <span className="text-[10px] px-2 py-0.5 rounded-full bg-maroon/70 text-gold">★</span>}
                 </div>
+                <label className="absolute top-2 right-2 cursor-pointer">
+                  <input type="checkbox" checked={selected.has(e.id)} onChange={() => toggleSelect(e.id)} className="h-5 w-5 rounded accent-[var(--gold)]" />
+                </label>
               </div>
               <div className="p-4">
                 <h3 className="font-semibold text-sm line-clamp-2">{e.title}</h3>
@@ -483,6 +514,8 @@ function GalleryTab() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [deleting, setDeleting] = useState(false);
   const { toast } = useToast();
 
   const load = useCallback(() => {
@@ -497,20 +530,49 @@ function GalleryTab() {
     toast({ title: 'Item deleted' }); load();
   };
 
+  const toggleSelect = (id: string) => {
+    const next = new Set(selected);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setSelected(next);
+  };
+
+  const deleteSelected = async () => {
+    if (selected.size === 0 || !confirm(`Delete ${selected.size} selected items?`)) return;
+    setDeleting(true);
+    for (const id of selected) {
+      await fetch(`/api/admin/gallery/${id}`, { method: 'DELETE', credentials: 'include' });
+    }
+    toast({ title: `${selected.size} items deleted` });
+    setSelected(new Set());
+    setDeleting(false);
+    load();
+  };
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Gallery</h1><p className="text-sm text-foreground/60">{items.length} items</p></div>
-        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Item</Button>
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Gallery</h1><p className="text-sm text-foreground/60">{items.length} items {selected.size > 0 && `· ${selected.size} selected`}</p></div>
+        <div className="flex gap-2">
+          {selected.size > 0 && (
+            <Button onClick={deleteSelected} disabled={deleting} variant="outline" className="text-red-400 border-red-400/30 hover:bg-red-500/10">
+              {deleting ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Trash2 className="h-4 w-4 mr-1" />}
+              Delete ({selected.size})
+            </Button>
+          )}
+          <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Item</Button>
+        </div>
       </div>
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">{Array.from({ length: 8 }).map((_, i) => <div key={i} className="aspect-square rounded-xl bg-card animate-pulse" />)}</div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {items.map(g => (
-            <div key={g.id} className="group relative rounded-xl overflow-hidden border border-gold/15 bg-card aspect-square">
+            <div key={g.id} className={cn('group relative rounded-xl overflow-hidden border bg-card aspect-square transition-all', selected.has(g.id) ? 'border-gold ring-2 ring-gold/30' : 'border-gold/15')}>
               <img src={g.thumbnail || g.url} alt={g.title} className="h-full w-full object-cover" loading="lazy" />
-              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-3">
+              <label className="absolute top-2 left-2 cursor-pointer z-10">
+                <input type="checkbox" checked={selected.has(g.id)} onChange={() => toggleSelect(g.id)} className="h-5 w-5 rounded accent-[var(--gold)]" />
+              </label>
+              <div className={cn('absolute inset-0 transition-opacity flex flex-col justify-between p-3', selected.has(g.id) ? 'bg-black/60 opacity-100' : 'bg-black/60 opacity-0 group-hover:opacity-100')}>
                 <div className="flex justify-end gap-1">
                   <button onClick={() => remove(g.id)} className="p-1.5 rounded-md bg-red-500/80 text-white hover:bg-red-500" aria-label="Delete"><Trash2 className="h-3.5 w-3.5" /></button>
                 </div>
@@ -597,6 +659,8 @@ function ArtistsTab() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [deleting, setDeleting] = useState(false);
   const { toast } = useToast();
 
   const load = useCallback(() => {
@@ -611,6 +675,24 @@ function ArtistsTab() {
     toast({ title: 'Artist deleted' }); load();
   };
 
+  const toggleSelect = (id: string) => {
+    const next = new Set(selected);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setSelected(next);
+  };
+
+  const deleteSelected = async () => {
+    if (selected.size === 0 || !confirm(`Delete ${selected.size} selected artists?`)) return;
+    setDeleting(true);
+    for (const id of selected) {
+      await fetch(`/api/admin/artists/${id}`, { method: 'DELETE', credentials: 'include' });
+    }
+    toast({ title: `${selected.size} artists deleted` });
+    setSelected(new Set());
+    setDeleting(false);
+    load();
+  };
+
   const toggleFeatured = async (a: any) => {
     await fetch(`/api/admin/artists/${a.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ featured: !a.featured }), credentials: 'include' });
     load();
@@ -618,19 +700,30 @@ function ArtistsTab() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Artists</h1><p className="text-sm text-foreground/60">{items.length} artists</p></div>
-        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Artist</Button>
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Artists</h1><p className="text-sm text-foreground/60">{items.length} artists {selected.size > 0 && `· ${selected.size} selected`}</p></div>
+        <div className="flex gap-2">
+          {selected.size > 0 && (
+            <Button onClick={deleteSelected} disabled={deleting} variant="outline" className="text-red-400 border-red-400/30 hover:bg-red-500/10">
+              {deleting ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Trash2 className="h-4 w-4 mr-1" />}
+              Delete ({selected.size})
+            </Button>
+          )}
+          <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Artist</Button>
+        </div>
       </div>
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">{Array.from({ length: 4 }).map((_, i) => <div key={i} className="aspect-square rounded-2xl bg-card animate-pulse" />)}</div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {items.map(a => (
-            <div key={a.id} className="rounded-2xl border border-gold/15 bg-card overflow-hidden">
+            <div key={a.id} className={cn('rounded-2xl border bg-card overflow-hidden transition-all', selected.has(a.id) ? 'border-gold ring-2 ring-gold/30' : 'border-gold/15')}>
               <div className="aspect-square relative">
                 <img src={a.avatar} alt={a.name} className="h-full w-full object-cover" loading="lazy" />
-                {a.featured && <span className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-gold-gradient px-2 py-0.5 text-[10px] font-bold text-white"><Star className="h-2.5 w-2.5 fill-white" /> Top</span>}
+                {a.featured && <span className="absolute top-2 left-2 inline-flex items-center gap-1 rounded-full bg-gold-gradient px-2 py-0.5 text-[10px] font-bold text-white"><Star className="h-2.5 w-2.5 fill-white" /> Top</span>}
+                <label className="absolute top-2 right-2 cursor-pointer">
+                  <input type="checkbox" checked={selected.has(a.id)} onChange={() => toggleSelect(a.id)} className="h-5 w-5 rounded accent-[var(--gold)]" />
+                </label>
               </div>
               <div className="p-3">
                 <div className="font-semibold text-sm">{a.name}</div>
@@ -711,6 +804,8 @@ function VideosTab() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [deleting, setDeleting] = useState(false);
   const { toast } = useToast();
 
   const load = useCallback(() => {
@@ -725,21 +820,50 @@ function VideosTab() {
     toast({ title: 'Video deleted' }); load();
   };
 
+  const toggleSelect = (id: string) => {
+    const next = new Set(selected);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setSelected(next);
+  };
+
+  const deleteSelected = async () => {
+    if (selected.size === 0 || !confirm(`Delete ${selected.size} selected videos?`)) return;
+    setDeleting(true);
+    for (const id of selected) {
+      await fetch(`/api/admin/videos/${id}`, { method: 'DELETE', credentials: 'include' });
+    }
+    toast({ title: `${selected.size} videos deleted` });
+    setSelected(new Set());
+    setDeleting(false);
+    load();
+  };
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Videos</h1><p className="text-sm text-foreground/60">{items.length} videos</p></div>
-        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Video</Button>
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Videos</h1><p className="text-sm text-foreground/60">{items.length} videos {selected.size > 0 && `· ${selected.size} selected`}</p></div>
+        <div className="flex gap-2">
+          {selected.size > 0 && (
+            <Button onClick={deleteSelected} disabled={deleting} variant="outline" className="text-red-400 border-red-400/30 hover:bg-red-500/10">
+              {deleting ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Trash2 className="h-4 w-4 mr-1" />}
+              Delete ({selected.size})
+            </Button>
+          )}
+          <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Video</Button>
+        </div>
       </div>
       {loading ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">{Array.from({ length: 6 }).map((_, i) => <div key={i} className="aspect-video rounded-2xl bg-card animate-pulse" />)}</div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map(v => (
-            <div key={v.id} className="rounded-2xl border border-gold/15 bg-card overflow-hidden">
+            <div key={v.id} className={cn('rounded-2xl border bg-card overflow-hidden transition-all', selected.has(v.id) ? 'border-gold ring-2 ring-gold/30' : 'border-gold/15')}>
               <div className="relative aspect-video">
                 <img src={v.thumbnail || `https://img.youtube.com/vi/${v.youtubeId}/maxresdefault.jpg`} alt={v.title} className="h-full w-full object-cover" loading="lazy" />
                 <div className="absolute top-2 left-2"><span className="text-[10px] px-2 py-0.5 rounded-full bg-maroon/80 backdrop-blur text-gold font-semibold">{v.category}</span></div>
+                <label className="absolute top-2 right-2 cursor-pointer">
+                  <input type="checkbox" checked={selected.has(v.id)} onChange={() => toggleSelect(v.id)} className="h-5 w-5 rounded accent-[var(--gold)]" />
+                </label>
               </div>
               <div className="p-4">
                 <h3 className="font-semibold text-sm line-clamp-1">{v.title}</h3>
@@ -808,6 +932,8 @@ function UpcomingTab() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [deleting, setDeleting] = useState(false);
   const { toast } = useToast();
 
   const load = useCallback(() => {
@@ -827,11 +953,37 @@ function UpcomingTab() {
     load();
   };
 
+  const toggleSelect = (id: string) => {
+    const next = new Set(selected);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setSelected(next);
+  };
+
+  const deleteSelected = async () => {
+    if (selected.size === 0 || !confirm(`Delete ${selected.size} selected events?`)) return;
+    setDeleting(true);
+    for (const id of selected) {
+      await fetch(`/api/admin/upcoming/${id}`, { method: 'DELETE', credentials: 'include' });
+    }
+    toast({ title: `${selected.size} events deleted` });
+    setSelected(new Set());
+    setDeleting(false);
+    load();
+  };
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Upcoming Events</h1><p className="text-sm text-foreground/60">{items.length} scheduled</p></div>
-        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Event</Button>
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Upcoming Events</h1><p className="text-sm text-foreground/60">{items.length} scheduled {selected.size > 0 && `· ${selected.size} selected`}</p></div>
+        <div className="flex gap-2">
+          {selected.size > 0 && (
+            <Button onClick={deleteSelected} disabled={deleting} variant="outline" className="text-red-400 border-red-400/30 hover:bg-red-500/10">
+              {deleting ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Trash2 className="h-4 w-4 mr-1" />}
+              Delete ({selected.size})
+            </Button>
+          )}
+          <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Event</Button>
+        </div>
       </div>
       {loading ? (
         <div className="space-y-3">{Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-20 rounded-2xl bg-card animate-pulse" />)}</div>
@@ -840,7 +992,10 @@ function UpcomingTab() {
       ) : (
         <div className="space-y-3">
           {items.map(u => (
-            <div key={u.id} className="rounded-2xl border border-gold/15 bg-card p-4 flex flex-wrap items-center gap-4">
+            <div key={u.id} className={cn('rounded-2xl border bg-card p-4 flex flex-wrap items-center gap-4 transition-all', selected.has(u.id) ? 'border-gold ring-2 ring-gold/30' : 'border-gold/15')}>
+              <label className="cursor-pointer">
+                <input type="checkbox" checked={selected.has(u.id)} onChange={() => toggleSelect(u.id)} className="h-5 w-5 rounded accent-[var(--gold)]" />
+              </label>
               <div className="flex flex-col items-center justify-center w-14 h-14 rounded-xl bg-gold-gradient text-white shrink-0">
                 <span className="font-display text-xl font-bold leading-none">{new Date(u.eventDate).getDate()}</span>
                 <span className="text-[10px] uppercase">{new Date(u.eventDate).toLocaleDateString('en-IN', { month: 'short' })}</span>
@@ -926,6 +1081,8 @@ function TestimonialsTab() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [deleting, setDeleting] = useState(false);
   const { toast } = useToast();
 
   const load = useCallback(() => {
@@ -944,11 +1101,37 @@ function TestimonialsTab() {
     load();
   };
 
+  const toggleSelect = (id: string) => {
+    const next = new Set(selected);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setSelected(next);
+  };
+
+  const deleteSelected = async () => {
+    if (selected.size === 0 || !confirm(`Delete ${selected.size} selected testimonials?`)) return;
+    setDeleting(true);
+    for (const id of selected) {
+      await fetch(`/api/admin/testimonials/${id}`, { method: 'DELETE', credentials: 'include' });
+    }
+    toast({ title: `${selected.size} testimonials deleted` });
+    setSelected(new Set());
+    setDeleting(false);
+    load();
+  };
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Testimonials</h1><p className="text-sm text-foreground/60">{items.length} testimonials</p></div>
-        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add</Button>
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Testimonials</h1><p className="text-sm text-foreground/60">{items.length} testimonials {selected.size > 0 && `· ${selected.size} selected`}</p></div>
+        <div className="flex gap-2">
+          {selected.size > 0 && (
+            <Button onClick={deleteSelected} disabled={deleting} variant="outline" className="text-red-400 border-red-400/30 hover:bg-red-500/10">
+              {deleting ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Trash2 className="h-4 w-4 mr-1" />}
+              Delete ({selected.size})
+            </Button>
+          )}
+          <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add</Button>
+        </div>
       </div>
       {loading ? (
         <div className="space-y-3">{Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-32 rounded-2xl bg-card animate-pulse" />)}</div>
@@ -957,8 +1140,11 @@ function TestimonialsTab() {
       ) : (
         <div className="space-y-3">
           {items.map(t => (
-            <div key={t.id} className="rounded-2xl border border-gold/15 bg-card p-5">
+            <div key={t.id} className={cn('rounded-2xl border bg-card p-5 transition-all', selected.has(t.id) ? 'border-gold ring-2 ring-gold/30' : 'border-gold/15')}>
               <div className="flex items-start gap-4">
+                <label className="cursor-pointer pt-1">
+                  <input type="checkbox" checked={selected.has(t.id)} onChange={() => toggleSelect(t.id)} className="h-5 w-5 rounded accent-[var(--gold)]" />
+                </label>
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gold/10 text-gold font-bold">{t.name.charAt(0)}</div>
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center justify-between gap-2">
