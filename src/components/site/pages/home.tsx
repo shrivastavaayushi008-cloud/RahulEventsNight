@@ -465,12 +465,12 @@ function Testimonials({ testimonials, loading }: { testimonials: Testimonial[]; 
   const t = list[idx];
 
   return (
-    <section className="bg-card/30 py-16 lg:py-24 border-y border-gold/10 relative overflow-hidden">
-      <div className="absolute inset-0 bg-pattern-dots opacity-50" />
+    <section className="relative py-16 lg:py-24 overflow-hidden bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 dark:from-[#2a2118] dark:via-[#1f1a12] dark:to-[#2a2118] border-t border-gold/20">
+      <div className="absolute inset-0 bg-pattern-dots opacity-30" />
       <div className="relative mx-auto max-w-4xl px-4 lg:px-8">
         <SectionHeading kicker="Reviews" title="What Clients Say" titleHi="ग्राहकों की राय" />
         <div className="mt-10 relative">
-          <Quote className="absolute -top-2 -left-2 h-14 w-14 text-gold/15" />
+          <Quote className="absolute -top-2 -left-2 h-14 w-14 text-gold/30" />
           <div className="relative">
             <div className="flex items-center gap-1 justify-center mb-4">
               {Array.from({ length: 5 }).map((_, i) => (
