@@ -142,16 +142,16 @@ function Stats({ settings }: { settings: any }) {
     { value: settings.stats_artists || '25+', label: 'Expert Artists', icon: Music },
   ];
   return (
-    <section className="relative bg-maroon-gradient border-y border-gold/15 py-10 overflow-hidden">
-      <div className="absolute inset-0 bg-pattern-dots opacity-30" />
+    <section className="relative bg-[#1a1a1a] border-t border-gold/20 py-12 overflow-hidden">
+      <div className="absolute inset-0 bg-pattern-dots opacity-20" />
       <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((s, i) => (
             <Reveal key={i} delay={i * 100} animation="scale">
               <div className="text-center">
-                <s.icon className="h-6 w-6 text-gold mx-auto mb-2 animate-float" style={{ animationDelay: `${i * 0.3}s` }} />
-                <div className="font-display text-3xl sm:text-4xl font-bold text-gradient-gold">{s.value}</div>
-                <div className="mt-1 text-xs sm:text-sm uppercase tracking-[0.15em] text-white/70">{s.label}</div>
+                <s.icon className="h-7 w-7 text-gold mx-auto mb-3" />
+                <div className="font-sans text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gradient-gold tracking-tight">{s.value}</div>
+                <div className="mt-2 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-white/60">{s.label}</div>
               </div>
             </Reveal>
           ))}
