@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { ImageUpload } from '@/components/site/image-upload';
 import type { Route } from '@/lib/types';
 
 interface AdminPageProps {
@@ -455,8 +456,9 @@ function EventModal({ event, onClose, onSaved }: { event: any; onClose: () => vo
           </div>
           <div className="space-y-2"><Label>Short Description</Label><Textarea rows={2} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} /></div>
           <div className="space-y-2"><Label>Long Description</Label><Textarea rows={4} value={form.longDesc} onChange={e => setForm({ ...form, longDesc: e.target.value })} /></div>
+          <ImageUpload label="Cover Image" value={form.coverImage} onChange={url => setForm({ ...form, coverImage: url })} folder="events" aspect="aspect-[4/3]" />
           <div className="grid sm:grid-cols-2 gap-4">
-            <div className="space-y-2"><Label>Cover Image URL</Label><Input value={form.coverImage} onChange={e => setForm({ ...form, coverImage: e.target.value })} /></div>
+            <div className="space-y-2"><Label>Event Date</Label><Input type="date" value={form.eventDate} onChange={e => setForm({ ...form, eventDate: e.target.value })} /></div>
             <div className="space-y-2"><Label>Location</Label><Input value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} /></div>
           </div>
           <div className="flex gap-6">
@@ -573,7 +575,7 @@ function GalleryModal({ onClose, onSaved }: { onClose: () => void; onSaved: () =
               </select>
             </div>
           </div>
-          <div className="space-y-2"><Label>Image / Poster URL</Label><Input value={form.url} onChange={e => setForm({ ...form, url: e.target.value })} /></div>
+          <ImageUpload label="Image / Poster" value={form.url} onChange={url => setForm({ ...form, url: url, thumbnail: url })} folder="gallery" aspect="aspect-[4/3]" />
           {form.type === 'video' && (
             <div className="space-y-2"><Label>YouTube Video ID</Label><Input value={form.youtubeId} onChange={e => setForm({ ...form, youtubeId: e.target.value })} placeholder="e.g. dQw4w9WgXcQ" /></div>
           )}
@@ -685,7 +687,7 @@ function ArtistModal({ onClose, onSaved }: { onClose: () => void; onSaved: () =>
             </div>
           </div>
           <div className="space-y-2"><Label>Specialty</Label><Input value={form.specialty} onChange={e => setForm({ ...form, specialty: e.target.value })} placeholder="e.g. Bhajan, Bollywood, Sufi" /></div>
-          <div className="space-y-2"><Label>Avatar URL</Label><Input value={form.avatar} onChange={e => setForm({ ...form, avatar: e.target.value })} /></div>
+          <ImageUpload label="Singer/Artist Photo" value={form.avatar} onChange={url => setForm({ ...form, avatar: url })} folder="artists" aspect="aspect-square" />
           <div className="space-y-2"><Label>Phone</Label><Input value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} placeholder="9999999999" /></div>
           <div className="space-y-2"><Label>Bio</Label><Textarea rows={3} value={form.bio} onChange={e => setForm({ ...form, bio: e.target.value })} /></div>
           <div className="flex gap-6">
@@ -904,6 +906,7 @@ function UpcomingModal({ onClose, onSaved }: { onClose: () => void; onSaved: () 
             <div className="space-y-2"><Label>City</Label><Input value={form.city} onChange={e => setForm({ ...form, city: e.target.value })} /></div>
           </div>
           <div className="space-y-2"><Label>Venue</Label><Input value={form.venue} onChange={e => setForm({ ...form, venue: e.target.value })} /></div>
+          <ImageUpload label="Cover Image" value={form.coverImage} onChange={url => setForm({ ...form, coverImage: url })} folder="upcoming" aspect="aspect-[4/3]" />
           <div className="space-y-2"><Label>Description</Label><Textarea rows={2} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} /></div>
           <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={form.bookingOpen} onChange={e => setForm({ ...form, bookingOpen: e.target.checked })} className="accent-[var(--gold)]" /> Booking Open</label>
         </div>
