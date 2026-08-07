@@ -30,8 +30,8 @@ export function HomePage({ data, loading, navigate }: PageProps) {
       <UpcomingEvents upcoming={data.upcoming} loading={loading} settings={data.settings} />
       <ArtistsPreview artists={data.artists} loading={loading} navigate={navigate} />
       <GalleryPreview data={data} loading={loading} navigate={navigate} />
-      <Testimonials testimonials={data.testimonials} loading={loading} />
       <ContactCTA settings={data.settings} navigate={navigate} />
+      <Testimonials testimonials={data.testimonials} loading={loading} />
     </>
   );
 }
