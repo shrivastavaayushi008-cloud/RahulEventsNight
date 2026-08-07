@@ -34,14 +34,16 @@ export default function Page() {
         brandHindi={data.settings.companyNameHindi}
       />
       <main className="flex-1">
-        {route === 'home' && <HomePage data={data} loading={loading} navigate={navigate} />}
-        {route === 'about' && <AboutPage data={data} loading={loading} navigate={navigate} />}
-        {route === 'events' && <EventsPage data={data} loading={loading} navigate={navigate} />}
-        {route === 'gallery' && <GalleryPage data={data} loading={loading} navigate={navigate} />}
-        {route === 'artists' && <ArtistsPage data={data} loading={loading} navigate={navigate} />}
-        {route === 'videos' && <VideosPage data={data} loading={loading} navigate={navigate} />}
-        {route === 'testimonials' && <TestimonialsPage data={data} loading={loading} navigate={navigate} />}
-        {route === 'contact' && <ContactPage data={data} loading={loading} navigate={navigate} />}
+        <div key={route} className="page-enter">
+          {route === 'home' && <HomePage data={data} loading={loading} navigate={navigate} />}
+          {route === 'about' && <AboutPage data={data} loading={loading} navigate={navigate} />}
+          {route === 'events' && <EventsPage data={data} loading={loading} navigate={navigate} />}
+          {route === 'gallery' && <GalleryPage data={data} loading={loading} navigate={navigate} />}
+          {route === 'artists' && <ArtistsPage data={data} loading={loading} navigate={navigate} />}
+          {route === 'videos' && <VideosPage data={data} loading={loading} navigate={navigate} />}
+          {route === 'testimonials' && <TestimonialsPage data={data} loading={loading} navigate={navigate} />}
+          {route === 'contact' && <ContactPage data={data} loading={loading} navigate={navigate} />}
+        </div>
       </main>
       <Footer navigate={navigate} settings={data.settings} />
       <FloatingContact settings={data.settings} />

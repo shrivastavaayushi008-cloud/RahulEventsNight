@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Playfair_Display, Tiro_Devanagari_Hindi } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "@/components/site/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,20 +31,12 @@ export const metadata: Metadata = {
   description:
     "RahulEventsNight — Every Event, Every Emotion, One Stage. Book Jagran, Hanuman Aradhna, Mata Ki Chowki, Track Singing, Live Singing, Sangeet Night, Wedding Singing. Call 9709954777.",
   keywords: [
-    "Jagran",
-    "Hanuman Aradhna",
-    "Mata Ki Chowki",
-    "Track Singing",
-    "Live Singing",
-    "Sangeet Night",
-    "Wedding Singing",
-    "Bhajan Sandhya",
-    "Sundarkand Path",
-    "RahulEventsNight",
-    "event management Delhi",
+    "Jagran", "Hanuman Aradhna", "Mata Ki Chowki", "Track Singing",
+    "Live Singing", "Sangeet Night", "Wedding Singing", "Bhajan Sandhya",
+    "Sundarkand Path", "RahulEventsNight", "event management Delhi",
   ],
   authors: [{ name: "RahulEventsNight" }],
-  icons: { icon: "/logo.svg" },
+  icons: { icon: "/logo.png" },
   openGraph: {
     title: "RahulEventsNight — Jagran, Hanuman Aradhna, Track Singing",
     description: "Every Event, Every Emotion, One Stage. Book your event: 9709954777",
@@ -61,12 +54,21 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="hi" className="dark" suppressHydrationWarning>
+    <html lang="hi" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&false)){document.documentElement.classList.add('dark')}}catch(e){}})()`,
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${tiroHindi.variable} antialiased bg-background text-foreground`}
       >
-        {children}
-        <Toaster />
+        <ThemeProvider>
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

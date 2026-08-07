@@ -2,6 +2,7 @@
 
 import { Sparkles, Phone, Mail, MapPin, Instagram, Facebook, Youtube, MessageCircle, Globe } from 'lucide-react';
 import type { Route, SiteSettings } from '@/lib/types';
+import Image from 'next/image';
 
 interface FooterProps {
   navigate: (route: Route) => void;
@@ -18,14 +19,14 @@ export function Footer({ navigate, settings }: FooterProps) {
   const waLink = whatsapp ? `https://wa.me/91${whatsapp}` : '#';
 
   return (
-    <footer className="mt-auto bg-background border-t border-gold/20">
+    <footer className="mt-auto bg-card border-t border-gold/20">
       <div className="mx-auto max-w-7xl px-4 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2.5 mb-4">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gold-gradient">
-                <Sparkles className="h-5 w-5 text-maroon" />
+              <span className="relative h-11 w-11 rounded-full overflow-hidden ring-2 ring-gold/30 shadow-lux">
+                <Image src="/logo.png" alt="Logo" fill className="object-cover" />
               </span>
               <div>
                 <div className="font-display text-lg font-bold text-foreground">
@@ -39,20 +40,20 @@ export function Footer({ navigate, settings }: FooterProps) {
             <p className="text-sm text-foreground/60 leading-relaxed">
               {settings.tagline} — {settings.taglineHindi}
             </p>
-            <p className="mt-2 font-hindi text-sm text-gold/80">{settings.tagline2}</p>
+            <p className="mt-2 font-hindi text-sm text-maroon">{settings.tagline2}</p>
             <div className="flex gap-2 mt-5">
               {settings.instagram && (
-                <a href={settings.instagram} aria-label="Instagram" className="p-2 rounded-full border border-gold/20 hover:border-gold hover:text-gold transition-colors">
+                <a href={settings.instagram} aria-label="Instagram" className="p-2 rounded-full border border-gold/20 hover:border-gold hover:text-gold hover:scale-110 transition-all">
                   <Instagram className="h-4 w-4" />
                 </a>
               )}
               {settings.facebook && (
-                <a href={settings.facebook} aria-label="Facebook" className="p-2 rounded-full border border-gold/20 hover:border-gold hover:text-gold transition-colors">
+                <a href={settings.facebook} aria-label="Facebook" className="p-2 rounded-full border border-gold/20 hover:border-gold hover:text-gold hover:scale-110 transition-all">
                   <Facebook className="h-4 w-4" />
                 </a>
               )}
               {settings.youtube && (
-                <a href={settings.youtube} aria-label="YouTube" className="p-2 rounded-full border border-gold/20 hover:border-gold hover:text-gold transition-colors">
+                <a href={settings.youtube} aria-label="YouTube" className="p-2 rounded-full border border-gold/20 hover:border-gold hover:text-gold hover:scale-110 transition-all">
                   <Youtube className="h-4 w-4" />
                 </a>
               )}
@@ -73,7 +74,7 @@ export function Footer({ navigate, settings }: FooterProps) {
                 ['contact', 'Contact'],
               ] as [Route, string][]).map(([r, label]) => (
                 <li key={r}>
-                  <button onClick={() => navigate(r)} className="text-foreground/60 hover:text-gold transition-colors">
+                  <button onClick={() => navigate(r)} className="text-foreground/60 hover:text-gold hover:translate-x-1 transition-all inline-block">
                     {label}
                   </button>
                 </li>
@@ -100,8 +101,8 @@ export function Footer({ navigate, settings }: FooterProps) {
             <ul className="space-y-3 text-sm text-foreground/60">
               {phoneDisplay && (
                 <li>
-                  <a href={`tel:${phone}`} className="flex items-start gap-2.5 hover:text-gold transition-colors">
-                    <Phone className="h-4 w-4 text-gold mt-0.5 shrink-0" />
+                  <a href={`tel:${phone}`} className="flex items-start gap-2.5 hover:text-gold transition-colors group">
+                    <Phone className="h-4 w-4 text-gold mt-0.5 shrink-0 group-hover:scale-110 transition-transform" />
                     <span>
                       <div className="text-xs text-foreground/40">Call</div>
                       <div className="font-semibold text-foreground">{phoneDisplay}</div>
@@ -111,8 +112,8 @@ export function Footer({ navigate, settings }: FooterProps) {
               )}
               {whatsapp && (
                 <li>
-                  <a href={waLink} target="_blank" rel="noreferrer" className="flex items-start gap-2.5 hover:text-gold transition-colors">
-                    <MessageCircle className="h-4 w-4 text-whatsapp mt-0.5 shrink-0" />
+                  <a href={waLink} target="_blank" rel="noreferrer" className="flex items-start gap-2.5 hover:text-whatsapp transition-colors group">
+                    <MessageCircle className="h-4 w-4 text-whatsapp mt-0.5 shrink-0 group-hover:scale-110 transition-transform" />
                     <span>
                       <div className="text-xs text-foreground/40">WhatsApp</div>
                       <div className="font-semibold text-foreground">+91 {whatsapp}</div>
@@ -146,12 +147,7 @@ export function Footer({ navigate, settings }: FooterProps) {
           <p className="text-xs text-foreground/40">
             © {year} RahulEventsNight. All rights reserved.
           </p>
-          <button
-            onClick={() => navigate('admin')}
-            className="text-xs text-foreground/30 hover:text-gold transition-colors"
-          >
-            Admin Login
-          </button>
+          <p className="font-hindi text-xs text-gold/70">आपका विश्वास, हमारी पहचान</p>
         </div>
       </div>
     </footer>

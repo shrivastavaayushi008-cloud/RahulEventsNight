@@ -8,6 +8,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { SectionHeading } from '@/components/site/section-heading';
 import { CardSkeleton } from '@/components/site/skeletons';
+import { Reveal } from '@/components/site/reveal';
 import type { SiteData } from '@/hooks/use-site-data';
 import type { Route, EventItem, Testimonial, UpcomingEvent, Artist } from '@/lib/types';
 import { EVENT_CATEGORIES as CATS } from '@/lib/types';
@@ -50,18 +51,18 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
           alt="Jagran stage"
           className="h-full w-full object-cover animate-kenburns"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/50" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 lg:px-8 pt-28 pb-16 w-full">
         <div className="max-w-3xl animate-fade-up">
           <div className="flex items-center gap-3 mb-5">
             <span className="h-px w-10 bg-gold" />
-            <span className="kicker font-hindi text-sm">{settings.taglineHindi || 'हर पल यादगार, हर इवेंट शानदार'}</span>
+            <span className="kicker font-hindi text-sm text-gold">{settings.taglineHindi || 'हर पल यादगार, हर इवेंट शानदार'}</span>
           </div>
 
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.05] text-foreground">
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.05] text-white">
             Every Event,
             <span className="block text-gradient-gold">Every Emotion,</span>
             <span className="block">One Stage</span>
@@ -71,15 +72,19 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
             राहुल इवेंट्स नाईट
           </p>
 
-          <p className="mt-5 text-base sm:text-lg text-foreground/70 leading-relaxed max-w-2xl">
+          <p className="mt-5 text-base sm:text-lg text-white/80 leading-relaxed max-w-2xl">
             Jagran · Hanuman Aradhna · Track Singing · Wedding Song Events · Sangeet Night —
             professional live performances for every celebration. Book now for a memorable event.
           </p>
 
           {/* Featured event pills */}
           <div className="mt-6 flex flex-wrap gap-2">
-            {['🛕 Jagran', '🕉️ Hanuman Aradhna', '🎤 Track Singing', '💍 Wedding Singing', '💃 Sangeet Night'].map(p => (
-              <span key={p} className="px-3 py-1.5 rounded-full text-xs font-medium bg-gold/10 border border-gold/30 text-gold">
+            {['🛕 Jagran', '🕉️ Hanuman Aradhna', '🎤 Track Singing', '💍 Wedding Singing', '💃 Sangeet Night'].map((p, i) => (
+              <span
+                key={p}
+                className="px-3 py-1.5 rounded-full text-xs font-medium bg-white/10 backdrop-blur border border-gold/40 text-gold animate-fade-up"
+                style={{ animationDelay: `${300 + i * 100}ms` }}
+              >
                 {p}
               </span>
             ))}
@@ -89,7 +94,7 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
             <Button
               onClick={() => navigate('contact')}
               size="lg"
-              className="bg-gold-gradient text-maroon hover:opacity-90 font-semibold shadow-gold h-12 px-7"
+              className="btn-shine bg-gold-gradient text-white hover:opacity-90 font-semibold shadow-gold h-12 px-7"
             >
               Book Now <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
@@ -98,7 +103,7 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-whatsapp/40 text-whatsapp hover:bg-whatsapp/10 hover:text-whatsapp h-12 px-7"
+                  className="border-white/40 text-white hover:bg-white/10 hover:text-white h-12 px-7 backdrop-blur"
                 >
                   <MessageCircle className="mr-2 h-4 w-4" /> WhatsApp Booking
                 </Button>
@@ -110,12 +115,12 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
           {phone && (
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <a href={`tel:${settings.phone}`} className="group flex items-center gap-3">
-                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gold-gradient text-maroon shadow-gold animate-glow">
+                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gold-gradient text-white shadow-gold animate-glow">
                   <Phone className="h-5 w-5" />
                 </span>
                 <span>
-                  <span className="block text-xs text-foreground/50 uppercase tracking-wider">Call for Booking</span>
-                  <span className="block font-display text-xl font-bold text-foreground group-hover:text-gold transition-colors">{phone}</span>
+                  <span className="block text-xs text-white/60 uppercase tracking-wider">Call for Booking</span>
+                  <span className="block font-display text-xl font-bold text-white group-hover:text-gold transition-colors">{phone}</span>
                 </span>
               </a>
               {whatsapp && (
@@ -124,8 +129,8 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
                     <MessageCircle className="h-5 w-5" />
                   </span>
                   <span>
-                    <span className="block text-xs text-foreground/50 uppercase tracking-wider">WhatsApp</span>
-                    <span className="block font-display text-xl font-bold text-foreground group-hover:text-whatsapp transition-colors">+91 {whatsapp}</span>
+                    <span className="block text-xs text-white/60 uppercase tracking-wider">WhatsApp</span>
+                    <span className="block font-display text-xl font-bold text-white group-hover:text-whatsapp transition-colors">+91 {whatsapp}</span>
                   </span>
                 </a>
               )}
@@ -134,9 +139,9 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
         </div>
       </div>
 
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2 text-foreground/40">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2 text-white/50">
         <span className="text-[10px] uppercase tracking-[0.3em]">Scroll</span>
-        <span className="h-10 w-px bg-gradient-to-b from-gold to-transparent" />
+        <span className="h-10 w-px bg-gradient-to-b from-gold to-transparent animate-bounce-subtle" />
       </div>
     </section>
   );
@@ -151,15 +156,18 @@ function Stats({ settings }: { settings: any }) {
     { value: settings.stats_artists || '25+', label: 'Expert Artists', icon: Music },
   ];
   return (
-    <section className="relative bg-maroon-gradient border-y border-gold/15 py-10">
-      <div className="mx-auto max-w-7xl px-4 lg:px-8">
+    <section className="relative bg-maroon-gradient border-y border-gold/15 py-10 overflow-hidden">
+      <div className="absolute inset-0 bg-pattern-dots opacity-30" />
+      <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((s, i) => (
-            <div key={i} className="text-center">
-              <s.icon className="h-6 w-6 text-gold mx-auto mb-2" />
-              <div className="font-display text-3xl sm:text-4xl font-bold text-gradient-gold">{s.value}</div>
-              <div className="mt-1 text-xs sm:text-sm uppercase tracking-[0.15em] text-white/70">{s.label}</div>
-            </div>
+            <Reveal key={i} delay={i * 100} animation="scale">
+              <div className="text-center">
+                <s.icon className="h-6 w-6 text-gold mx-auto mb-2 animate-float" style={{ animationDelay: `${i * 0.3}s` }} />
+                <div className="font-display text-3xl sm:text-4xl font-bold text-gradient-gold">{s.value}</div>
+                <div className="mt-1 text-xs sm:text-sm uppercase tracking-[0.15em] text-white/70">{s.label}</div>
+              </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -172,23 +180,26 @@ function Categories({ navigate }: { navigate: (r: Route) => void }) {
   return (
     <section className="bg-background py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        <SectionHeading
-          kicker="Our Services"
-          title="Event Categories"
-          titleHi="इवेंट श्रेणियाँ"
-          subtitle="From spiritual Jagrans to live singing and weddings — we cover every celebration."
-        />
+        <Reveal>
+          <SectionHeading
+            kicker="Our Services"
+            title="Event Categories"
+            titleHi="इवेंट श्रेणियाँ"
+            subtitle="From spiritual Jagrans to live singing and weddings — we cover every celebration."
+          />
+        </Reveal>
         <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          {CATS.map(cat => (
-            <button
-              key={cat.key}
-              onClick={() => navigate('events')}
-              className="group rounded-2xl border border-gold/15 bg-card p-5 text-center transition-all hover:-translate-y-1 hover:border-gold/40 hover:shadow-gold"
-            >
-              <div className="text-4xl mb-3">{cat.icon}</div>
-              <div className="font-display text-sm font-bold text-foreground">{cat.label}</div>
-              <div className="font-hindi text-xs text-gold mt-0.5">{cat.labelHi}</div>
-            </button>
+          {CATS.map((cat, i) => (
+            <Reveal key={cat.key} delay={i * 80} animation="scale">
+              <button
+                onClick={() => navigate('events')}
+                className="group w-full rounded-2xl border border-gold/15 bg-card p-5 text-center transition-all hover:-translate-y-2 hover:border-gold/40 hover:shadow-gold card-lift"
+              >
+                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">{cat.icon}</div>
+                <div className="font-display text-sm font-bold text-foreground">{cat.label}</div>
+                <div className="font-hindi text-xs text-gold mt-0.5">{cat.labelHi}</div>
+              </button>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -212,17 +223,19 @@ function FeaturedEvents({
   return (
     <section className="bg-card/30 py-16 lg:py-24 border-y border-gold/10">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
-          <SectionHeading
-            kicker="Featured"
-            title="Featured Events"
-            titleHi="विशेष इवेंट"
-            align="left"
-          />
-          <Button onClick={() => navigate('events')} variant="outline" className="border-gold/30 text-gold hover:bg-gold/10 shrink-0">
-            View All Events <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
+        <Reveal>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+            <SectionHeading
+              kicker="Featured"
+              title="Featured Events"
+              titleHi="विशेष इवेंट"
+              align="left"
+            />
+            <Button onClick={() => navigate('events')} variant="outline" className="border-gold/30 text-gold hover:bg-gold/10 shrink-0 btn-shine">
+              View All Events <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
+        </Reveal>
 
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -231,7 +244,9 @@ function FeaturedEvents({
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {display.map((e, i) => (
-              <FeaturedEventCard key={e.id} event={e} navigate={navigate} large={i === 0} />
+              <Reveal key={e.id} delay={i * 100}>
+                <FeaturedEventCard event={e} navigate={navigate} large={i === 0} />
+              </Reveal>
             ))}
           </div>
         )}
@@ -292,12 +307,14 @@ function UpcomingEvents({
   return (
     <section className="bg-background py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        <SectionHeading
-          kicker="Schedule"
-          title="Upcoming Events"
-          titleHi="आगामी कार्यक्रम"
-          subtitle="Join us at our next live performance. Book your spot or book a similar event for yourself."
-        />
+        <Reveal>
+          <SectionHeading
+            kicker="Schedule"
+            title="Upcoming Events"
+            titleHi="आगामी कार्यक्रम"
+            subtitle="Join us at our next live performance. Book your spot or book a similar event for yourself."
+          />
+        </Reveal>
         {loading ? (
           <div className="mt-10 space-y-3">{Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-20 rounded-2xl bg-card animate-pulse" />)}</div>
         ) : upcoming.length === 0 ? (
@@ -307,18 +324,19 @@ function UpcomingEvents({
           </div>
         ) : (
           <div className="mt-10 space-y-3">
-            {upcoming.map(u => {
+            {upcoming.map((u, i) => {
               const d = new Date(u.eventDate);
               const day = d.getDate();
               const month = d.toLocaleDateString('en-IN', { month: 'short' });
               return (
-                <div key={u.id} className="group flex flex-col sm:flex-row sm:items-center gap-4 rounded-2xl border border-gold/15 bg-card p-4 sm:p-5 transition-all hover:border-gold/40 hover:shadow-lux">
-                  {/* Date */}
-                  <div className="flex items-center gap-3 shrink-0">
-                    <div className="flex flex-col items-center justify-center w-16 h-16 rounded-xl bg-gold-gradient text-maroon">
-                      <span className="font-display text-2xl font-bold leading-none">{day}</span>
-                      <span className="text-xs uppercase tracking-wider">{month}</span>
-                    </div>
+                <Reveal key={u.id} delay={i * 80} animation="left">
+                  <div className="group flex flex-col sm:flex-row sm:items-center gap-4 rounded-2xl border border-gold/15 bg-card p-4 sm:p-5 transition-all hover:border-gold/40 hover:shadow-lux card-lift">
+                    {/* Date */}
+                    <div className="flex items-center gap-3 shrink-0">
+                      <div className="flex flex-col items-center justify-center w-16 h-16 rounded-xl bg-gold-gradient text-white">
+                        <span className="font-display text-2xl font-bold leading-none">{day}</span>
+                        <span className="text-xs uppercase tracking-wider">{month}</span>
+                      </div>
                     {u.eventTime && (
                       <div className="text-xs text-foreground/50">
                         <div>{u.eventTime}</div>
@@ -342,13 +360,14 @@ function UpcomingEvents({
                   <div className="flex gap-2 shrink-0">
                     {u.bookingOpen && settings.whatsapp && (
                       <a href={waLink} target="_blank" rel="noreferrer">
-                        <Button size="sm" className="bg-gold-gradient text-maroon hover:opacity-90">
+                        <Button size="sm" className="btn-shine bg-gold-gradient text-white hover:opacity-90">
                           Book Now
                         </Button>
                       </a>
                     )}
                   </div>
                 </div>
+                </Reveal>
               );
             })}
           </div>
@@ -364,39 +383,42 @@ function ArtistsPreview({ artists, loading, navigate }: { artists: Artist[]; loa
   return (
     <section className="bg-card/30 py-16 lg:py-24 border-y border-gold/10">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
-          <SectionHeading kicker="Our Talent" title="Meet Our Artists" titleHi="हमारे कलाकार" align="left" />
-          <Button onClick={() => navigate('artists')} variant="outline" className="border-gold/30 text-gold hover:bg-gold/10 shrink-0">
-            All Artists <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
+        <Reveal>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+            <SectionHeading kicker="Our Talent" title="Meet Our Artists" titleHi="हमारे कलाकार" align="left" />
+            <Button onClick={() => navigate('artists')} variant="outline" className="border-gold/30 text-gold hover:bg-gold/10 shrink-0 btn-shine">
+              All Artists <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
+        </Reveal>
         {loading ? (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {Array.from({ length: 4 }).map((_, i) => <div key={i} className="aspect-[3/4] rounded-2xl bg-card animate-pulse" />)}
           </div>
         ) : (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {display.map(a => (
-              <button
-                key={a.id}
-                onClick={() => navigate('artists')}
-                className="group rounded-2xl border border-gold/15 bg-background overflow-hidden text-left transition-all hover:-translate-y-1 hover:shadow-lux"
-              >
-                <div className="relative aspect-[3/4] overflow-hidden">
-                  <img src={a.avatar} alt={a.name} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-                  {a.featured && (
-                    <span className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-gold-gradient px-2 py-0.5 text-[10px] font-bold text-maroon">
-                      <Star className="h-2.5 w-2.5 fill-maroon" /> Top
-                    </span>
-                  )}
-                </div>
-                <div className="p-4">
-                  <h3 className="font-display text-base font-bold text-foreground">{a.name}</h3>
-                  <p className="text-xs text-gold mt-0.5">{a.role}</p>
-                  {a.specialty && <p className="text-xs text-foreground/50 mt-1 line-clamp-1">{a.specialty}</p>}
-                </div>
-              </button>
+            {display.map((a, i) => (
+              <Reveal key={a.id} delay={i * 100} animation="up">
+                <button
+                  onClick={() => navigate('artists')}
+                  className="group w-full rounded-2xl border border-gold/15 bg-background overflow-hidden text-left transition-all hover:-translate-y-2 hover:shadow-lux card-lift"
+                >
+                  <div className="relative aspect-[3/4] overflow-hidden img-zoom">
+                    <img src={a.avatar} alt={a.name} className="h-full w-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+                    {a.featured && (
+                      <span className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-gold-gradient px-2 py-0.5 text-[10px] font-bold text-white">
+                        <Star className="h-2.5 w-2.5 fill-white" /> Top
+                      </span>
+                    )}
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-display text-base font-bold text-foreground">{a.name}</h3>
+                    <p className="text-xs text-gold mt-0.5">{a.role}</p>
+                    {a.specialty && <p className="text-xs text-foreground/50 mt-1 line-clamp-1">{a.specialty}</p>}
+                  </div>
+                </button>
+              </Reveal>
             ))}
           </div>
         )}
