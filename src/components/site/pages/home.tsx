@@ -38,13 +38,12 @@ export function HomePage({ data, loading, navigate }: PageProps) {
 
 /* ----------------------------- Hero ----------------------------- */
 function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => void }) {
-  const phone = settings.phoneDisplay || settings.phone || '';
   const whatsapp = settings.whatsapp || '';
   const waLink = whatsapp ? `https://wa.me/91${whatsapp}` : '#';
 
   return (
-    <section className="relative min-h-[100svh] flex items-center overflow-hidden bg-black">
-      {/* Banner background - static, no motion */}
+    <section className="relative min-h-[100svh] flex items-end overflow-hidden bg-black">
+      {/* Banner background - shows the full poster as-is */}
       <div className="absolute inset-0">
         <img
           src="/images/hero/banner.jpg"
@@ -53,57 +52,31 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
           loading="eager"
           fetchPriority="high"
         />
-        {/* Dark overlay for text readability - stronger on mobile */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/60 sm:via-black/30 sm:to-black/50" />
+        {/* Dark gradient only at bottom for button readability */}
+        <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black via-black/70 to-transparent" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 sm:pt-28 pb-16 sm:pb-20 w-full">
-        <div className="max-w-2xl">
-          {/* Tagline pill */}
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-black/70 backdrop-blur border border-gold/50 mb-4 sm:mb-5">
-            <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-gold shrink-0" />
-            <span className="font-hindi text-xs sm:text-sm font-bold text-gold">{settings.taglineHindi || 'हर पल यादगार, हर इवेंट शानदार'}</span>
-          </div>
-
-          {/* Main heading */}
-          <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-[1.05] text-white hero-text-shadow">
-            RahulEventsNight
-          </h1>
-          <p className="mt-2 sm:mt-3 font-hindi text-lg sm:text-2xl lg:text-3xl font-bold text-gold hero-text-shadow">
-            राहुल इवेंट्स नाईट
-          </p>
-
-          <p className="mt-4 sm:mt-5 text-sm sm:text-base lg:text-lg font-medium text-white leading-relaxed max-w-xl hero-text-shadow">
-            Jagran · Hanuman Aradhna · Track Singing · Wedding Song Events —
-            professional live performances for every celebration.
-          </p>
-
-          {/* CTA buttons - full width on mobile, auto on desktop */}
-          <div className="mt-6 sm:mt-7 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3">
-            <Button
-              onClick={() => navigate('contact')}
-              size="lg"
-              className="btn-shine bg-gold-gradient text-white hover:opacity-90 font-bold shadow-gold h-12 px-6 sm:px-7 text-base w-full sm:w-auto"
-            >
-              Book Now <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-            {whatsapp && (
-              <a href={waLink} target="_blank" rel="noreferrer" className="w-full sm:w-auto">
-                <Button
-                  size="lg"
-                  className="bg-whatsapp text-white hover:bg-whatsapp/90 font-bold shadow-lux h-12 px-6 sm:px-7 text-base w-full sm:w-auto"
-                >
-                  <MessageCircle className="mr-2 h-4 w-4" /> WhatsApp Booking
-                </Button>
-              </a>
-            )}
-          </div>
+      {/* Only buttons at the bottom - banner has all the branding already */}
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16 w-full">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 max-w-md">
+          <Button
+            onClick={() => navigate('contact')}
+            size="lg"
+            className="bg-gold-gradient text-white hover:opacity-90 font-bold shadow-gold h-12 px-6 sm:px-7 text-base w-full sm:w-auto"
+          >
+            Book Now <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+          {whatsapp && (
+            <a href={waLink} target="_blank" rel="noreferrer" className="w-full sm:w-auto">
+              <Button
+                size="lg"
+                className="bg-whatsapp text-white hover:bg-whatsapp/90 font-bold shadow-lux h-12 px-6 sm:px-7 text-base w-full sm:w-auto"
+              >
+                <MessageCircle className="mr-2 h-4 w-4" /> WhatsApp Booking
+              </Button>
+            </a>
+          )}
         </div>
-      </div>
-
-      <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2">
-        <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold hero-text-shadow">Scroll</span>
-        <span className="h-10 w-px bg-gradient-to-b from-gold to-transparent animate-bounce-subtle" />
       </div>
     </section>
   );
