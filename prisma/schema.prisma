@@ -1,0 +1,146 @@
+// RahulEventsNight - Spiritual & Musical Event Platform
+// Focus: Jagran, Hanuman Aradhna, Track Singing, Wedding Song Events
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  category    String // Spiritual, Singing, Wedding, Family, Corporate, Stage Shows
+  subCategory String? // e.g. Jagran, Hanuman Aradhna, Track Singing
+  description String
+  longDesc    String?
+  coverImage  String
+  gallery     String? // JSON array of image URLs
+  eventDate   String?
+  location    String?
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model GalleryItem {
+  id          String   @id @default(cuid())
+  title       String
+  category    String // Spiritual, Singing, Wedding, Family, Corporate, Stage Shows
+  type        String // photo | video
+  url         String
+  thumbnail   String?
+  youtubeId   String? // for videos
+  description String?
+  eventDate   String?
+  location    String?
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Artist {
+  id          String   @id @default(cuid())
+  name        String
+  role        String // Singer, Anchor, Musician, Band Member
+  specialty   String? // e.g. Bhajan, Bollywood, Sufi
+  bio         String?
+  avatar      String
+  phone       String?
+  social      String? // JSON {youtube, instagram, facebook}
+  order       Int      @default(0)
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Video {
+  id          String   @id @default(cuid())
+  title       String
+  category    String // Spiritual, Singing, Wedding, etc.
+  youtubeId   String
+  thumbnail   String?
+  description String?
+  duration    String?
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model UpcomingEvent {
+  id          String   @id @default(cuid())
+  title       String
+  category    String
+  eventDate   String
+  eventTime   String?
+  venue       String
+  city        String?
+  description String?
+  coverImage  String?
+  bookingOpen Boolean  @default(true)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  role      String
+  company   String?
+  avatar    String?
+  rating    Int      @default(5)
+  message   String
+  event     String?
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TeamMember {
+  id        String   @id @default(cuid())
+  name      String
+  role      String
+  bio       String?
+  avatar    String
+  social    String?
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Inquiry {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String
+  eventDate String?
+  eventType String?
+  message   String
+  status    String   @default("new")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SiteSetting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+}
