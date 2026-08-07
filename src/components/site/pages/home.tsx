@@ -142,7 +142,7 @@ function Stats({ settings }: { settings: any }) {
     { value: settings.stats_artists || '25+', label: 'Expert Artists', icon: Music },
   ];
   return (
-    <section className="relative bg-[#1a1a1a] border-t border-gold/20 py-12 overflow-hidden">
+    <section className="relative bg-[#1e3a5f] border-t border-gold/30 py-12 overflow-hidden">
       <div className="absolute inset-0 bg-pattern-dots opacity-20" />
       <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
