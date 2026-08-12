@@ -30,6 +30,15 @@ export function EventsPage({ data, loading, navigate }: PageProps) {
 
   const filtered = activeCategory === 'all' ? data.events : (grouped[activeCategory] || []);
 
+  // Category images from settings (same as home page)
+  const categoryImages: Record<string, string> = (() => {
+    try {
+      const raw = data.settings?.categoryImages;
+      if (!raw) return {};
+      return typeof raw === 'string' ? JSON.parse(raw) : raw;
+    } catch { return {}; }
+  })();
+
   return (
     <>
       <section className="pt-32 pb-12 lg:pt-40 lg:pb-16 bg-card/30">
@@ -40,6 +49,46 @@ export function EventsPage({ data, loading, navigate }: PageProps) {
             titleHi="इवेंट श्रेणियाँ"
             subtitle="Browse all our event types — from spiritual Jagrans to live singing and wedding celebrations."
           />
+        </div>
+      </section>
+
+      {/* Category cards with images */}
+      <section className="bg-background py-8 lg:py-12 border-b border-gold/10">
+        <div className="mx-auto max-w-7xl px-4 lg:px-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            {EVENT_CATEGORIES.map(cat => {
+              const img = categoryImages[cat.key];
+              return (
+                <button
+                  key={cat.key}
+                  onClick={() => setActiveCategory(cat.key)}
+                  className={cn(
+                    'group relative w-full rounded-2xl border overflow-hidden text-center transition-all hover:-translate-y-1 hover:shadow-gold card-lift',
+                    activeCategory === cat.key ? 'border-gold ring-2 ring-gold/30' : 'border-gold/15'
+                  )}
+                >
+                  {img ? (
+                    <>
+                      <div className="relative aspect-[4/3] overflow-hidden">
+                        <img src={img} alt={cat.label} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                      </div>
+                      <div className="absolute bottom-0 inset-x-0 p-3 text-left">
+                        <div className="font-display text-sm font-bold text-white">{cat.label}</div>
+                        <div className="font-hindi text-xs text-gold">{cat.labelHi}</div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="p-5">
+                      <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">{cat.icon}</div>
+                      <div className="font-display text-sm font-bold text-foreground">{cat.label}</div>
+                      <div className="font-hindi text-xs text-gold mt-0.5">{cat.labelHi}</div>
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </section>
 
