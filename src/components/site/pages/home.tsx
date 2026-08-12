@@ -42,27 +42,25 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
   const waLink = whatsapp ? `https://wa.me/91${whatsapp}` : '#';
 
   return (
-    <section className="relative min-h-[100svh] flex items-end overflow-hidden bg-black">
-      {/* Banner background - fits properly on all devices */}
-      <div className="absolute inset-0">
-        <img
-          src="/images/hero/banner.jpg"
-          alt="RahulEventsNight Banner"
-          className="h-full w-full object-contain sm:object-cover sm:object-left"
-          loading="eager"
-          fetchPriority="high"
-        />
-        {/* Dark overlay at bottom for button readability */}
-        <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black via-black/70 to-transparent" />
-      </div>
+    <section className="relative bg-black pt-16 sm:pt-20">
+      {/* Banner image - natural height, curved corners on mobile */}
+      <div className="relative mx-auto max-w-7xl px-0 sm:px-4">
+        <div className="relative overflow-hidden sm:rounded-2xl">
+          <img
+            src="/images/hero/banner.jpg"
+            alt="RahulEventsNight Banner"
+            className="w-full h-auto object-contain"
+            loading="eager"
+            fetchPriority="high"
+          />
+        </div>
 
-      {/* Only buttons at the bottom - banner has all the branding already */}
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16 w-full">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 max-w-md">
+        {/* Buttons right below the banner */}
+        <div className="px-3 sm:px-0 py-3 sm:py-4 flex flex-col sm:flex-row gap-2.5 sm:gap-3 max-w-2xl">
           <Button
             onClick={() => navigate('contact')}
             size="lg"
-            className="bg-gold-gradient text-white hover:opacity-90 font-bold shadow-gold h-12 px-6 sm:px-7 text-base w-full sm:w-auto"
+            className="bg-gold-gradient text-white hover:opacity-90 font-bold shadow-gold h-12 px-6 text-base w-full sm:w-auto rounded-xl"
           >
             Book Now <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
@@ -70,7 +68,7 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
             <a href={waLink} target="_blank" rel="noreferrer" className="w-full sm:w-auto">
               <Button
                 size="lg"
-                className="bg-whatsapp text-white hover:bg-whatsapp/90 font-bold shadow-lux h-12 px-6 sm:px-7 text-base w-full sm:w-auto"
+                className="bg-whatsapp text-white hover:bg-whatsapp/90 font-bold shadow-lux h-12 px-6 text-base w-full sm:w-auto rounded-xl"
               >
                 <MessageCircle className="mr-2 h-4 w-4" /> WhatsApp Booking
               </Button>
