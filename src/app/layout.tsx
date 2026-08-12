@@ -262,8 +262,8 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
         />
-        {/* Google Search Console verification - replace content with your code */}
-        <meta name="google-site-verification" content="YOUR_GOOGLE_VERIFICATION_CODE" />
+        {/* Google Search Console verification */}
+        <meta name="google-site-verification" content="VT-5EtLYr65ZTB4rmhhoztN0pBzyVwwbw0IsNQGHN24" />
         {/* Bing verification */}
         <meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE" />
         {/* Google Analytics - replace G-XXXXXXX with your tracking ID */}
