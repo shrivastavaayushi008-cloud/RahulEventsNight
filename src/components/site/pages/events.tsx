@@ -131,7 +131,7 @@ function EventCard({ event, navigate }: { event: EventItem; navigate: (r: Route)
   return (
     <div className="group rounded-2xl border border-gold/15 bg-card overflow-hidden transition-all hover:-translate-y-1 hover:shadow-lux">
       <div className="relative aspect-[4/3] overflow-hidden">
-        <img src={event.coverImage} alt={event.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+        <img src={event.coverImage} alt={event.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
         <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
         <div className="absolute top-3 left-3">
           <span className="inline-flex items-center rounded-full bg-gold-gradient px-3 py-1 text-xs font-semibold text-maroon">

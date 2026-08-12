@@ -163,7 +163,7 @@ export function GalleryPage({ data, loading, navigate }: PageProps) {
               </div>
             ) : (
               <div className="rounded-2xl overflow-hidden bg-black">
-                <img src={lightbox.url} alt={lightbox.title} className="w-full max-h-[75vh] object-contain" />
+                <img src={lightbox.url} alt={lightbox.title} className="w-full max-h-[75vh] object-contain" loading="lazy" />
               </div>
             )}
             <div className="mt-4 text-center">

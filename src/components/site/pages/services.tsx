@@ -36,7 +36,7 @@ function ServicesHero() {
   return (
     <section className="relative pt-32 pb-16 sm:pt-40 sm:pb-20 bg-black overflow-hidden">
       <div className="absolute inset-0 opacity-20">
-        <img src="/images/services/decoration.png" alt="" className="h-full w-full object-cover" />
+        <img src="/images/services/decoration.jpg" alt="" className="h-full w-full object-cover" loading="lazy" />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/60" />
       </div>
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -102,7 +102,7 @@ function ServicesList({
               {/* Image */}
               <div className="relative">
                 <div className="relative rounded-3xl overflow-hidden aspect-[4/3] shadow-lux">
-                  <img src={s.image} alt={s.name} className="h-full w-full object-cover" />
+                  <img src={s.image} alt={s.name} className="h-full w-full object-cover" loading="lazy" />
                   <div className="absolute inset-0 ring-1 ring-inset ring-gold/10 rounded-3xl" />
                 </div>
                 <div className="absolute -bottom-5 -left-5 sm:-bottom-6 sm:-left-6 hidden sm:flex items-center gap-3 bg-black border border-gold/30 rounded-2xl px-5 py-3 shadow-lux">

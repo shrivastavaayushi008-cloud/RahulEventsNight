@@ -24,7 +24,7 @@ export function HomePage({ data, loading, navigate }: PageProps) {
   return (
     <>
       <Hero settings={data.settings} navigate={navigate} />
-      <Categories navigate={navigate} />
+      <Categories navigate={navigate} settings={data.settings} />
       <FeaturedEvents events={data.events} loading={loading} navigate={navigate} />
       <UpcomingEvents upcoming={data.upcoming} loading={loading} settings={data.settings} />
       <ArtistsPreview artists={data.artists} loading={loading} navigate={navigate} />
@@ -38,98 +38,58 @@ export function HomePage({ data, loading, navigate }: PageProps) {
 
 /* ----------------------------- Hero ----------------------------- */
 function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => void }) {
-  const phone = settings.phoneDisplay || settings.phone || '';
   const whatsapp = settings.whatsapp || '';
   const waLink = whatsapp ? `https://wa.me/91${whatsapp}` : '#';
 
   return (
+<<<<<<< HEAD
     <section className="relative min-h-[100svh] flex items-center overflow-hidden bg-black">
       {/* Banner background - fits properly on all devices */}
+=======
+    <section className="relative min-h-[100svh] flex items-end overflow-hidden bg-black">
+      {/* Banner background - shows the full poster as-is */}
+>>>>>>> 0cdd9d38e11599a408a8b341535ca2463df16e9d
       <div className="absolute inset-0">
         <img
           src="/images/hero/banner.jpg"
           alt="RahulEventsNight Banner"
+<<<<<<< HEAD
           className="h-full w-full object-contain sm:object-cover sm:object-left"
           loading="eager"
           fetchPriority="high"
         />
         {/* Dark overlay at bottom for button readability */}
+=======
+          className="h-full w-full object-cover object-center sm:object-left"
+          loading="eager"
+          fetchPriority="high"
+        />
+        {/* Dark gradient only at bottom for button readability */}
+>>>>>>> 0cdd9d38e11599a408a8b341535ca2463df16e9d
         <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black via-black/70 to-transparent" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-20 w-full">
-        <div className="max-w-2xl animate-fade-up">
-          {/* Tagline pill - solid dark background for contrast */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/70 backdrop-blur border border-gold/50 mb-5">
-            <Sparkles className="h-4 w-4 text-gold shrink-0" />
-            <span className="font-hindi text-sm font-bold text-gold">{settings.taglineHindi || 'हर पल यादगार, हर इवेंट शानदार'}</span>
-          </div>
-
-          {/* Main heading - solid white, extra bold, with strong shadow */}
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-[1.05] text-white hero-text-shadow">
-            RahulEventsNight
-          </h1>
-          <p className="mt-3 font-hindi text-xl sm:text-2xl lg:text-3xl font-bold text-gold hero-text-shadow">
-            राहुल इवेंट्स नाईट
-          </p>
-
-          <p className="mt-5 text-sm sm:text-base lg:text-lg font-medium text-white leading-relaxed max-w-xl hero-text-shadow">
-            Jagran · Hanuman Aradhna · Track Singing · Wedding Song Events —
-            professional live performances for every celebration.
-          </p>
-
-          {/* CTA buttons */}
-          <div className="mt-7 flex flex-wrap items-center gap-3">
-            <Button
-              onClick={() => navigate('contact')}
-              size="lg"
-              className="btn-shine bg-gold-gradient text-white hover:opacity-90 font-bold shadow-gold h-11 sm:h-12 px-6 sm:px-7 text-base"
-            >
-              Book Now <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-            {whatsapp && (
-              <a href={waLink} target="_blank" rel="noreferrer">
-                <Button
-                  size="lg"
-                  className="bg-whatsapp text-white hover:bg-whatsapp/90 font-bold shadow-lux h-11 sm:h-12 px-6 sm:px-7 text-base"
-                >
-                  <MessageCircle className="mr-2 h-4 w-4" /> WhatsApp Booking
-                </Button>
-              </a>
-            )}
-          </div>
-
-          {/* Phone prominent - solid dark pill behind for readability */}
-          {phone && (
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a href={`tel:${settings.phone}`} className="group flex items-center gap-3 px-4 py-2.5 rounded-xl bg-black/60 backdrop-blur border border-white/10 hover:border-gold/50 transition-colors">
-                <span className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-gold-gradient text-white shadow-gold animate-glow shrink-0">
-                  <Phone className="h-5 w-5" />
-                </span>
-                <span>
-                  <span className="block text-[10px] sm:text-xs font-bold text-gold uppercase tracking-wider">Call for Booking</span>
-                  <span className="block font-display text-lg sm:text-xl font-extrabold text-white">{phone}</span>
-                </span>
-              </a>
-              {whatsapp && (
-                <a href={waLink} target="_blank" rel="noreferrer" className="group flex items-center gap-3 px-4 py-2.5 rounded-xl bg-black/60 backdrop-blur border border-white/10 hover:border-whatsapp/50 transition-colors">
-                  <span className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-whatsapp text-white shadow-lux shrink-0">
-                    <MessageCircle className="h-5 w-5" />
-                  </span>
-                  <span>
-                    <span className="block text-[10px] sm:text-xs font-bold text-whatsapp uppercase tracking-wider">WhatsApp</span>
-                    <span className="block font-display text-lg sm:text-xl font-extrabold text-white">+91 {whatsapp}</span>
-                  </span>
-                </a>
-              )}
-            </div>
+      {/* Only buttons at the bottom - banner has all the branding already */}
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16 w-full">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 max-w-md">
+          <Button
+            onClick={() => navigate('contact')}
+            size="lg"
+            className="bg-gold-gradient text-white hover:opacity-90 font-bold shadow-gold h-12 px-6 sm:px-7 text-base w-full sm:w-auto"
+          >
+            Book Now <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+          {whatsapp && (
+            <a href={waLink} target="_blank" rel="noreferrer" className="w-full sm:w-auto">
+              <Button
+                size="lg"
+                className="bg-whatsapp text-white hover:bg-whatsapp/90 font-bold shadow-lux h-12 px-6 sm:px-7 text-base w-full sm:w-auto"
+              >
+                <MessageCircle className="mr-2 h-4 w-4" /> WhatsApp Booking
+              </Button>
+            </a>
           )}
         </div>
-      </div>
-
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2">
-        <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold hero-text-shadow">Scroll</span>
-        <span className="h-10 w-px bg-gradient-to-b from-gold to-transparent animate-bounce-subtle" />
       </div>
     </section>
   );
@@ -144,16 +104,16 @@ function Stats({ settings }: { settings: any }) {
     { value: settings.stats_artists || '25+', label: 'Expert Artists', icon: Music },
   ];
   return (
-    <section className="relative bg-maroon-gradient border-y border-gold/15 py-10 overflow-hidden">
-      <div className="absolute inset-0 bg-pattern-dots opacity-30" />
+    <section className="relative bg-[#1e3a5f] border-t border-gold/30 py-12 overflow-hidden">
+      <div className="absolute inset-0 bg-pattern-dots opacity-20" />
       <div className="relative mx-auto max-w-7xl px-4 lg:px-8">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((s, i) => (
             <Reveal key={i} delay={i * 100} animation="scale">
               <div className="text-center">
-                <s.icon className="h-6 w-6 text-gold mx-auto mb-2 animate-float" style={{ animationDelay: `${i * 0.3}s` }} />
-                <div className="font-display text-3xl sm:text-4xl font-bold text-gradient-gold">{s.value}</div>
-                <div className="mt-1 text-xs sm:text-sm uppercase tracking-[0.15em] text-white/70">{s.label}</div>
+                <s.icon className="h-7 w-7 text-gold mx-auto mb-3" />
+                <div className="font-sans text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gradient-gold tracking-tight">{s.value}</div>
+                <div className="mt-2 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-white/60">{s.label}</div>
               </div>
             </Reveal>
           ))}
@@ -164,7 +124,16 @@ function Stats({ settings }: { settings: any }) {
 }
 
 /* ----------------------------- Categories ----------------------------- */
-function Categories({ navigate }: { navigate: (r: Route) => void }) {
+function Categories({ navigate, settings }: { navigate: (r: Route) => void; settings: any }) {
+  // Category images stored in settings as JSON: { "Spiritual": "/images/...", "Singing": "..." }
+  const categoryImages: Record<string, string> = (() => {
+    try {
+      const raw = settings?.categoryImages;
+      if (!raw) return {};
+      return typeof raw === 'string' ? JSON.parse(raw) : raw;
+    } catch { return {}; }
+  })();
+
   return (
     <section className="bg-background py-16 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
@@ -177,18 +146,36 @@ function Categories({ navigate }: { navigate: (r: Route) => void }) {
           />
         </Reveal>
         <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          {CATS.map((cat, i) => (
-            <Reveal key={cat.key} delay={i * 80} animation="scale">
-              <button
-                onClick={() => navigate('events')}
-                className="group w-full rounded-2xl border border-gold/15 bg-card p-5 text-center transition-all hover:-translate-y-2 hover:border-gold/40 hover:shadow-gold card-lift"
-              >
-                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">{cat.icon}</div>
-                <div className="font-display text-sm font-bold text-foreground">{cat.label}</div>
-                <div className="font-hindi text-xs text-gold mt-0.5">{cat.labelHi}</div>
-              </button>
-            </Reveal>
-          ))}
+          {CATS.map((cat, i) => {
+            const img = categoryImages[cat.key];
+            return (
+              <Reveal key={cat.key} delay={i * 80} animation="scale">
+                <button
+                  onClick={() => navigate('events')}
+                  className="group relative w-full rounded-2xl border border-gold/15 bg-card overflow-hidden text-center transition-all hover:-translate-y-2 hover:border-gold/40 hover:shadow-gold card-lift"
+                >
+                  {img ? (
+                    <>
+                      <div className="relative aspect-[4/3] overflow-hidden">
+                        <img src={img} alt={cat.label} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                      </div>
+                      <div className="absolute bottom-0 inset-x-0 p-3 text-left">
+                        <div className="font-display text-sm font-bold text-white">{cat.label}</div>
+                        <div className="font-hindi text-xs text-gold">{cat.labelHi}</div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="p-5">
+                      <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">{cat.icon}</div>
+                      <div className="font-display text-sm font-bold text-foreground">{cat.label}</div>
+                      <div className="font-hindi text-xs text-gold mt-0.5">{cat.labelHi}</div>
+                    </div>
+                  )}
+                </button>
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -253,7 +240,7 @@ function FeaturedEventCard({ event, navigate, large }: { event: EventItem; navig
       )}
     >
       <div className={cn('relative overflow-hidden', large ? 'aspect-[16/10]' : 'aspect-[4/3]')}>
-        <img src={event.coverImage} alt={event.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+        <img src={event.coverImage} alt={event.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
         {/* Subtle dark gradient only at bottom for text legibility - no white wash */}
         <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
         <div className="absolute top-3 left-3">
@@ -393,7 +380,7 @@ function ArtistsPreview({ artists, loading, navigate }: { artists: Artist[]; loa
                   className="group w-full rounded-2xl border border-gold/15 bg-background overflow-hidden text-left transition-all hover:-translate-y-2 hover:shadow-lux card-lift"
                 >
                   <div className="relative aspect-square overflow-hidden img-zoom">
-                    <img src={a.avatar} alt={a.name} className="h-full w-full object-cover object-top" />
+                    <img src={a.avatar} alt={a.name} className="h-full w-full object-cover object-top" loading="lazy" />
                     {a.featured && (
                       <span className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-gold-gradient px-2 py-0.5 text-[10px] font-bold text-white">
                         <Star className="h-2.5 w-2.5 fill-white" /> Top
@@ -439,7 +426,7 @@ function GalleryPreview({ data, loading, navigate }: { data: SiteData; loading: 
                 onClick={() => navigate('gallery')}
                 className="group relative aspect-square overflow-hidden rounded-xl border border-gold/15 bg-card"
               >
-                <img src={g.thumbnail || g.url} alt={g.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <img src={g.thumbnail || g.url} alt={g.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
                 <div className="absolute inset-0 bg-background/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <Play className="h-6 w-6 text-gold" />
                 </div>
@@ -467,12 +454,12 @@ function Testimonials({ testimonials, loading }: { testimonials: Testimonial[]; 
   const t = list[idx];
 
   return (
-    <section className="bg-card/30 py-16 lg:py-24 border-y border-gold/10 relative overflow-hidden">
-      <div className="absolute inset-0 bg-pattern-dots opacity-50" />
+    <section className="relative py-16 lg:py-24 overflow-hidden bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 dark:from-[#2a2118] dark:via-[#1f1a12] dark:to-[#2a2118] border-t border-gold/20">
+      <div className="absolute inset-0 bg-pattern-dots opacity-30" />
       <div className="relative mx-auto max-w-4xl px-4 lg:px-8">
         <SectionHeading kicker="Reviews" title="What Clients Say" titleHi="ग्राहकों की राय" />
         <div className="mt-10 relative">
-          <Quote className="absolute -top-2 -left-2 h-14 w-14 text-gold/15" />
+          <Quote className="absolute -top-2 -left-2 h-14 w-14 text-gold/30" />
           <div className="relative">
             <div className="flex items-center gap-1 justify-center mb-4">
               {Array.from({ length: 5 }).map((_, i) => (

@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     const parsed = schema.safeParse(body);
     if (!parsed.success) return bad('Invalid credentials');
 
-    const admin = await db.adminUser.findUnique({ where: { email: parsed.data.email } });
+    const admin = await db.adminUser.findUnique({ where: { email: parsed.data.email } }).catch(() => null);
     if (!admin) return bad('Invalid credentials', 401);
 
     const valid = await bcrypt.compare(parsed.data.password, admin.password);

@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { ImageUpload } from '@/components/site/image-upload';
 import type { Route } from '@/lib/types';
 
 interface AdminPageProps {
@@ -356,6 +357,8 @@ function EventsTab() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<any | null>(null);
   const [creating, setCreating] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [deleting, setDeleting] = useState(false);
   const { toast } = useToast();
 
   const load = useCallback(() => {
@@ -370,27 +373,56 @@ function EventsTab() {
     toast({ title: 'Event deleted' }); load();
   };
 
+  const toggleSelect = (id: string) => {
+    const next = new Set(selected);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setSelected(next);
+  };
+
+  const deleteSelected = async () => {
+    if (selected.size === 0 || !confirm(`Delete ${selected.size} selected events?`)) return;
+    setDeleting(true);
+    for (const id of selected) {
+      await fetch(`/api/admin/events/${id}`, { method: 'DELETE', credentials: 'include' });
+    }
+    toast({ title: `${selected.size} events deleted` });
+    setSelected(new Set());
+    setDeleting(false);
+    load();
+  };
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="font-display text-2xl sm:text-3xl font-bold">Events</h1>
-          <p className="text-sm text-foreground/60">{items.length} events</p>
+          <p className="text-sm text-foreground/60">{items.length} events {selected.size > 0 && `· ${selected.size} selected`}</p>
         </div>
-        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Event</Button>
+        <div className="flex gap-2">
+          {selected.size > 0 && (
+            <Button onClick={deleteSelected} disabled={deleting} variant="outline" className="text-red-400 border-red-400/30 hover:bg-red-500/10">
+              {deleting ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Trash2 className="h-4 w-4 mr-1" />}
+              Delete ({selected.size})
+            </Button>
+          )}
+          <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Event</Button>
+        </div>
       </div>
       {loading ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">{Array.from({ length: 6 }).map((_, i) => <div key={i} className="h-48 rounded-2xl bg-card animate-pulse" />)}</div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map(e => (
-            <div key={e.id} className="rounded-2xl border border-gold/15 bg-card overflow-hidden">
+            <div key={e.id} className={cn('rounded-2xl border bg-card overflow-hidden transition-all', selected.has(e.id) ? 'border-gold ring-2 ring-gold/30' : 'border-gold/15')}>
               <div className="relative aspect-video">
-                <img src={e.coverImage} alt={e.title} className="h-full w-full object-cover" />
+                <img src={e.coverImage} alt={e.title} className="h-full w-full object-cover" loading="lazy" />
                 <div className="absolute top-2 left-2 flex gap-1.5">
                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-gold-gradient text-white font-semibold">{e.category}</span>
                   {e.featured && <span className="text-[10px] px-2 py-0.5 rounded-full bg-maroon/70 text-gold">★</span>}
                 </div>
+                <label className="absolute top-2 right-2 cursor-pointer">
+                  <input type="checkbox" checked={selected.has(e.id)} onChange={() => toggleSelect(e.id)} className="h-5 w-5 rounded accent-[var(--gold)]" />
+                </label>
               </div>
               <div className="p-4">
                 <h3 className="font-semibold text-sm line-clamp-2">{e.title}</h3>
@@ -413,7 +445,7 @@ function EventModal({ event, onClose, onSaved }: { event: any; onClose: () => vo
   const [form, setForm] = useState({
     title: event?.title || '', slug: event?.slug || '', category: event?.category || 'Spiritual',
     subCategory: event?.subCategory || '', description: event?.description || '', longDesc: event?.longDesc || '',
-    coverImage: event?.coverImage || '/images/events/jagran.png', eventDate: event?.eventDate || '', location: event?.location || '',
+    coverImage: event?.coverImage || '/images/events/jagran.jpg', eventDate: event?.eventDate || '', location: event?.location || '',
     featured: event?.featured || false, published: event?.published ?? true,
   });
   const [saving, setSaving] = useState(false);
@@ -455,8 +487,9 @@ function EventModal({ event, onClose, onSaved }: { event: any; onClose: () => vo
           </div>
           <div className="space-y-2"><Label>Short Description</Label><Textarea rows={2} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} /></div>
           <div className="space-y-2"><Label>Long Description</Label><Textarea rows={4} value={form.longDesc} onChange={e => setForm({ ...form, longDesc: e.target.value })} /></div>
+          <ImageUpload label="Cover Image" value={form.coverImage} onChange={url => setForm({ ...form, coverImage: url })} folder="events" aspect="aspect-[4/3]" />
           <div className="grid sm:grid-cols-2 gap-4">
-            <div className="space-y-2"><Label>Cover Image URL</Label><Input value={form.coverImage} onChange={e => setForm({ ...form, coverImage: e.target.value })} /></div>
+            <div className="space-y-2"><Label>Event Date</Label><Input type="date" value={form.eventDate} onChange={e => setForm({ ...form, eventDate: e.target.value })} /></div>
             <div className="space-y-2"><Label>Location</Label><Input value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} /></div>
           </div>
           <div className="flex gap-6">
@@ -481,6 +514,8 @@ function GalleryTab() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [deleting, setDeleting] = useState(false);
   const { toast } = useToast();
 
   const load = useCallback(() => {
@@ -495,20 +530,49 @@ function GalleryTab() {
     toast({ title: 'Item deleted' }); load();
   };
 
+  const toggleSelect = (id: string) => {
+    const next = new Set(selected);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setSelected(next);
+  };
+
+  const deleteSelected = async () => {
+    if (selected.size === 0 || !confirm(`Delete ${selected.size} selected items?`)) return;
+    setDeleting(true);
+    for (const id of selected) {
+      await fetch(`/api/admin/gallery/${id}`, { method: 'DELETE', credentials: 'include' });
+    }
+    toast({ title: `${selected.size} items deleted` });
+    setSelected(new Set());
+    setDeleting(false);
+    load();
+  };
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Gallery</h1><p className="text-sm text-foreground/60">{items.length} items</p></div>
-        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Item</Button>
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Gallery</h1><p className="text-sm text-foreground/60">{items.length} items {selected.size > 0 && `· ${selected.size} selected`}</p></div>
+        <div className="flex gap-2">
+          {selected.size > 0 && (
+            <Button onClick={deleteSelected} disabled={deleting} variant="outline" className="text-red-400 border-red-400/30 hover:bg-red-500/10">
+              {deleting ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Trash2 className="h-4 w-4 mr-1" />}
+              Delete ({selected.size})
+            </Button>
+          )}
+          <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Item</Button>
+        </div>
       </div>
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">{Array.from({ length: 8 }).map((_, i) => <div key={i} className="aspect-square rounded-xl bg-card animate-pulse" />)}</div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {items.map(g => (
-            <div key={g.id} className="group relative rounded-xl overflow-hidden border border-gold/15 bg-card aspect-square">
-              <img src={g.thumbnail || g.url} alt={g.title} className="h-full w-full object-cover" />
-              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-3">
+            <div key={g.id} className={cn('group relative rounded-xl overflow-hidden border bg-card aspect-square transition-all', selected.has(g.id) ? 'border-gold ring-2 ring-gold/30' : 'border-gold/15')}>
+              <img src={g.thumbnail || g.url} alt={g.title} className="h-full w-full object-cover" loading="lazy" />
+              <label className="absolute top-2 left-2 cursor-pointer z-10">
+                <input type="checkbox" checked={selected.has(g.id)} onChange={() => toggleSelect(g.id)} className="h-5 w-5 rounded accent-[var(--gold)]" />
+              </label>
+              <div className={cn('absolute inset-0 transition-opacity flex flex-col justify-between p-3', selected.has(g.id) ? 'bg-black/60 opacity-100' : 'bg-black/60 opacity-0 group-hover:opacity-100')}>
                 <div className="flex justify-end gap-1">
                   <button onClick={() => remove(g.id)} className="p-1.5 rounded-md bg-red-500/80 text-white hover:bg-red-500" aria-label="Delete"><Trash2 className="h-3.5 w-3.5" /></button>
                 </div>
@@ -530,7 +594,7 @@ function GalleryTab() {
 function GalleryModal({ onClose, onSaved }: { onClose: () => void; onSaved: () => void }) {
   const [form, setForm] = useState({
     title: '', category: 'Spiritual', type: 'photo' as 'photo' | 'video',
-    url: '/images/events/jagran.png', thumbnail: '', youtubeId: '', description: '', eventDate: '', location: '', published: true,
+    url: '/images/events/jagran.jpg', thumbnail: '', youtubeId: '', description: '', eventDate: '', location: '', published: true,
   });
   const [saving, setSaving] = useState(false);
   const { toast } = useToast();
@@ -573,7 +637,7 @@ function GalleryModal({ onClose, onSaved }: { onClose: () => void; onSaved: () =
               </select>
             </div>
           </div>
-          <div className="space-y-2"><Label>Image / Poster URL</Label><Input value={form.url} onChange={e => setForm({ ...form, url: e.target.value })} /></div>
+          <ImageUpload label="Image / Poster" value={form.url} onChange={url => setForm({ ...form, url: url, thumbnail: url })} folder="gallery" aspect="aspect-[4/3]" />
           {form.type === 'video' && (
             <div className="space-y-2"><Label>YouTube Video ID</Label><Input value={form.youtubeId} onChange={e => setForm({ ...form, youtubeId: e.target.value })} placeholder="e.g. dQw4w9WgXcQ" /></div>
           )}
@@ -595,6 +659,8 @@ function ArtistsTab() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [deleting, setDeleting] = useState(false);
   const { toast } = useToast();
 
   const load = useCallback(() => {
@@ -609,6 +675,24 @@ function ArtistsTab() {
     toast({ title: 'Artist deleted' }); load();
   };
 
+  const toggleSelect = (id: string) => {
+    const next = new Set(selected);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setSelected(next);
+  };
+
+  const deleteSelected = async () => {
+    if (selected.size === 0 || !confirm(`Delete ${selected.size} selected artists?`)) return;
+    setDeleting(true);
+    for (const id of selected) {
+      await fetch(`/api/admin/artists/${id}`, { method: 'DELETE', credentials: 'include' });
+    }
+    toast({ title: `${selected.size} artists deleted` });
+    setSelected(new Set());
+    setDeleting(false);
+    load();
+  };
+
   const toggleFeatured = async (a: any) => {
     await fetch(`/api/admin/artists/${a.id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ featured: !a.featured }), credentials: 'include' });
     load();
@@ -616,19 +700,30 @@ function ArtistsTab() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Artists</h1><p className="text-sm text-foreground/60">{items.length} artists</p></div>
-        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Artist</Button>
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Artists</h1><p className="text-sm text-foreground/60">{items.length} artists {selected.size > 0 && `· ${selected.size} selected`}</p></div>
+        <div className="flex gap-2">
+          {selected.size > 0 && (
+            <Button onClick={deleteSelected} disabled={deleting} variant="outline" className="text-red-400 border-red-400/30 hover:bg-red-500/10">
+              {deleting ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Trash2 className="h-4 w-4 mr-1" />}
+              Delete ({selected.size})
+            </Button>
+          )}
+          <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Artist</Button>
+        </div>
       </div>
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">{Array.from({ length: 4 }).map((_, i) => <div key={i} className="aspect-square rounded-2xl bg-card animate-pulse" />)}</div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {items.map(a => (
-            <div key={a.id} className="rounded-2xl border border-gold/15 bg-card overflow-hidden">
+            <div key={a.id} className={cn('rounded-2xl border bg-card overflow-hidden transition-all', selected.has(a.id) ? 'border-gold ring-2 ring-gold/30' : 'border-gold/15')}>
               <div className="aspect-square relative">
-                <img src={a.avatar} alt={a.name} className="h-full w-full object-cover" />
-                {a.featured && <span className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-gold-gradient px-2 py-0.5 text-[10px] font-bold text-white"><Star className="h-2.5 w-2.5 fill-white" /> Top</span>}
+                <img src={a.avatar} alt={a.name} className="h-full w-full object-cover" loading="lazy" />
+                {a.featured && <span className="absolute top-2 left-2 inline-flex items-center gap-1 rounded-full bg-gold-gradient px-2 py-0.5 text-[10px] font-bold text-white"><Star className="h-2.5 w-2.5 fill-white" /> Top</span>}
+                <label className="absolute top-2 right-2 cursor-pointer">
+                  <input type="checkbox" checked={selected.has(a.id)} onChange={() => toggleSelect(a.id)} className="h-5 w-5 rounded accent-[var(--gold)]" />
+                </label>
               </div>
               <div className="p-3">
                 <div className="font-semibold text-sm">{a.name}</div>
@@ -649,7 +744,7 @@ function ArtistsTab() {
 }
 
 function ArtistModal({ onClose, onSaved }: { onClose: () => void; onSaved: () => void }) {
-  const [form, setForm] = useState({ name: '', role: 'Singer', specialty: '', bio: '', avatar: '/images/artists/artist-1.png', phone: '', order: 0, featured: false, published: true });
+  const [form, setForm] = useState({ name: '', role: 'Singer', specialty: '', bio: '', avatar: '/images/artists/artist-1.jpg', phone: '', order: 0, featured: false, published: true });
   const [saving, setSaving] = useState(false);
   const { toast } = useToast();
 
@@ -680,12 +775,12 @@ function ArtistModal({ onClose, onSaved }: { onClose: () => void; onSaved: () =>
             <div className="space-y-2">
               <Label>Role</Label>
               <select value={form.role} onChange={e => setForm({ ...form, role: e.target.value })} className="flex h-10 w-full rounded-md border border-input bg-background px-3 text-sm">
-                {['Singer', 'Anchor', 'Musician', 'Band Member'].map(r => <option key={r}>{r}</option>)}
+                {['Singer', 'Anchor', 'Musician', 'Band Member', 'Organiser'].map(r => <option key={r}>{r}</option>)}
               </select>
             </div>
           </div>
           <div className="space-y-2"><Label>Specialty</Label><Input value={form.specialty} onChange={e => setForm({ ...form, specialty: e.target.value })} placeholder="e.g. Bhajan, Bollywood, Sufi" /></div>
-          <div className="space-y-2"><Label>Avatar URL</Label><Input value={form.avatar} onChange={e => setForm({ ...form, avatar: e.target.value })} /></div>
+          <ImageUpload label="Singer/Artist Photo" value={form.avatar} onChange={url => setForm({ ...form, avatar: url })} folder="artists" aspect="aspect-square" />
           <div className="space-y-2"><Label>Phone</Label><Input value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} placeholder="9999999999" /></div>
           <div className="space-y-2"><Label>Bio</Label><Textarea rows={3} value={form.bio} onChange={e => setForm({ ...form, bio: e.target.value })} /></div>
           <div className="flex gap-6">
@@ -709,6 +804,8 @@ function VideosTab() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [deleting, setDeleting] = useState(false);
   const { toast } = useToast();
 
   const load = useCallback(() => {
@@ -723,21 +820,50 @@ function VideosTab() {
     toast({ title: 'Video deleted' }); load();
   };
 
+  const toggleSelect = (id: string) => {
+    const next = new Set(selected);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setSelected(next);
+  };
+
+  const deleteSelected = async () => {
+    if (selected.size === 0 || !confirm(`Delete ${selected.size} selected videos?`)) return;
+    setDeleting(true);
+    for (const id of selected) {
+      await fetch(`/api/admin/videos/${id}`, { method: 'DELETE', credentials: 'include' });
+    }
+    toast({ title: `${selected.size} videos deleted` });
+    setSelected(new Set());
+    setDeleting(false);
+    load();
+  };
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Videos</h1><p className="text-sm text-foreground/60">{items.length} videos</p></div>
-        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Video</Button>
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Videos</h1><p className="text-sm text-foreground/60">{items.length} videos {selected.size > 0 && `· ${selected.size} selected`}</p></div>
+        <div className="flex gap-2">
+          {selected.size > 0 && (
+            <Button onClick={deleteSelected} disabled={deleting} variant="outline" className="text-red-400 border-red-400/30 hover:bg-red-500/10">
+              {deleting ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Trash2 className="h-4 w-4 mr-1" />}
+              Delete ({selected.size})
+            </Button>
+          )}
+          <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Video</Button>
+        </div>
       </div>
       {loading ? (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">{Array.from({ length: 6 }).map((_, i) => <div key={i} className="aspect-video rounded-2xl bg-card animate-pulse" />)}</div>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map(v => (
-            <div key={v.id} className="rounded-2xl border border-gold/15 bg-card overflow-hidden">
+            <div key={v.id} className={cn('rounded-2xl border bg-card overflow-hidden transition-all', selected.has(v.id) ? 'border-gold ring-2 ring-gold/30' : 'border-gold/15')}>
               <div className="relative aspect-video">
-                <img src={v.thumbnail || `https://img.youtube.com/vi/${v.youtubeId}/maxresdefault.jpg`} alt={v.title} className="h-full w-full object-cover" />
+                <img src={v.thumbnail || `https://img.youtube.com/vi/${v.youtubeId}/maxresdefault.jpg`} alt={v.title} className="h-full w-full object-cover" loading="lazy" />
                 <div className="absolute top-2 left-2"><span className="text-[10px] px-2 py-0.5 rounded-full bg-maroon/80 backdrop-blur text-gold font-semibold">{v.category}</span></div>
+                <label className="absolute top-2 right-2 cursor-pointer">
+                  <input type="checkbox" checked={selected.has(v.id)} onChange={() => toggleSelect(v.id)} className="h-5 w-5 rounded accent-[var(--gold)]" />
+                </label>
               </div>
               <div className="p-4">
                 <h3 className="font-semibold text-sm line-clamp-1">{v.title}</h3>
@@ -806,6 +932,8 @@ function UpcomingTab() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [deleting, setDeleting] = useState(false);
   const { toast } = useToast();
 
   const load = useCallback(() => {
@@ -825,11 +953,37 @@ function UpcomingTab() {
     load();
   };
 
+  const toggleSelect = (id: string) => {
+    const next = new Set(selected);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setSelected(next);
+  };
+
+  const deleteSelected = async () => {
+    if (selected.size === 0 || !confirm(`Delete ${selected.size} selected events?`)) return;
+    setDeleting(true);
+    for (const id of selected) {
+      await fetch(`/api/admin/upcoming/${id}`, { method: 'DELETE', credentials: 'include' });
+    }
+    toast({ title: `${selected.size} events deleted` });
+    setSelected(new Set());
+    setDeleting(false);
+    load();
+  };
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Upcoming Events</h1><p className="text-sm text-foreground/60">{items.length} scheduled</p></div>
-        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Event</Button>
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Upcoming Events</h1><p className="text-sm text-foreground/60">{items.length} scheduled {selected.size > 0 && `· ${selected.size} selected`}</p></div>
+        <div className="flex gap-2">
+          {selected.size > 0 && (
+            <Button onClick={deleteSelected} disabled={deleting} variant="outline" className="text-red-400 border-red-400/30 hover:bg-red-500/10">
+              {deleting ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Trash2 className="h-4 w-4 mr-1" />}
+              Delete ({selected.size})
+            </Button>
+          )}
+          <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add Event</Button>
+        </div>
       </div>
       {loading ? (
         <div className="space-y-3">{Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-20 rounded-2xl bg-card animate-pulse" />)}</div>
@@ -838,7 +992,10 @@ function UpcomingTab() {
       ) : (
         <div className="space-y-3">
           {items.map(u => (
-            <div key={u.id} className="rounded-2xl border border-gold/15 bg-card p-4 flex flex-wrap items-center gap-4">
+            <div key={u.id} className={cn('rounded-2xl border bg-card p-4 flex flex-wrap items-center gap-4 transition-all', selected.has(u.id) ? 'border-gold ring-2 ring-gold/30' : 'border-gold/15')}>
+              <label className="cursor-pointer">
+                <input type="checkbox" checked={selected.has(u.id)} onChange={() => toggleSelect(u.id)} className="h-5 w-5 rounded accent-[var(--gold)]" />
+              </label>
               <div className="flex flex-col items-center justify-center w-14 h-14 rounded-xl bg-gold-gradient text-white shrink-0">
                 <span className="font-display text-xl font-bold leading-none">{new Date(u.eventDate).getDate()}</span>
                 <span className="text-[10px] uppercase">{new Date(u.eventDate).toLocaleDateString('en-IN', { month: 'short' })}</span>
@@ -864,7 +1021,7 @@ function UpcomingTab() {
 }
 
 function UpcomingModal({ onClose, onSaved }: { onClose: () => void; onSaved: () => void }) {
-  const [form, setForm] = useState({ title: '', category: 'Spiritual', eventDate: '', eventTime: '', venue: '', city: '', description: '', coverImage: '/images/events/jagran.png', bookingOpen: true, published: true });
+  const [form, setForm] = useState({ title: '', category: 'Spiritual', eventDate: '', eventTime: '', venue: '', city: '', description: '', coverImage: '/images/events/jagran.jpg', bookingOpen: true, published: true });
   const [saving, setSaving] = useState(false);
   const { toast } = useToast();
 
@@ -904,6 +1061,7 @@ function UpcomingModal({ onClose, onSaved }: { onClose: () => void; onSaved: () 
             <div className="space-y-2"><Label>City</Label><Input value={form.city} onChange={e => setForm({ ...form, city: e.target.value })} /></div>
           </div>
           <div className="space-y-2"><Label>Venue</Label><Input value={form.venue} onChange={e => setForm({ ...form, venue: e.target.value })} /></div>
+          <ImageUpload label="Cover Image" value={form.coverImage} onChange={url => setForm({ ...form, coverImage: url })} folder="upcoming" aspect="aspect-[4/3]" />
           <div className="space-y-2"><Label>Description</Label><Textarea rows={2} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} /></div>
           <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={form.bookingOpen} onChange={e => setForm({ ...form, bookingOpen: e.target.checked })} className="accent-[var(--gold)]" /> Booking Open</label>
         </div>
@@ -923,6 +1081,8 @@ function TestimonialsTab() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [deleting, setDeleting] = useState(false);
   const { toast } = useToast();
 
   const load = useCallback(() => {
@@ -941,11 +1101,37 @@ function TestimonialsTab() {
     load();
   };
 
+  const toggleSelect = (id: string) => {
+    const next = new Set(selected);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setSelected(next);
+  };
+
+  const deleteSelected = async () => {
+    if (selected.size === 0 || !confirm(`Delete ${selected.size} selected testimonials?`)) return;
+    setDeleting(true);
+    for (const id of selected) {
+      await fetch(`/api/admin/testimonials/${id}`, { method: 'DELETE', credentials: 'include' });
+    }
+    toast({ title: `${selected.size} testimonials deleted` });
+    setSelected(new Set());
+    setDeleting(false);
+    load();
+  };
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Testimonials</h1><p className="text-sm text-foreground/60">{items.length} testimonials</p></div>
-        <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add</Button>
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div><h1 className="font-display text-2xl sm:text-3xl font-bold">Testimonials</h1><p className="text-sm text-foreground/60">{items.length} testimonials {selected.size > 0 && `· ${selected.size} selected`}</p></div>
+        <div className="flex gap-2">
+          {selected.size > 0 && (
+            <Button onClick={deleteSelected} disabled={deleting} variant="outline" className="text-red-400 border-red-400/30 hover:bg-red-500/10">
+              {deleting ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Trash2 className="h-4 w-4 mr-1" />}
+              Delete ({selected.size})
+            </Button>
+          )}
+          <Button onClick={() => setCreating(true)} className="bg-gold-gradient text-white hover:opacity-90"><Plus className="h-4 w-4 mr-1" /> Add</Button>
+        </div>
       </div>
       {loading ? (
         <div className="space-y-3">{Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-32 rounded-2xl bg-card animate-pulse" />)}</div>
@@ -954,8 +1140,11 @@ function TestimonialsTab() {
       ) : (
         <div className="space-y-3">
           {items.map(t => (
-            <div key={t.id} className="rounded-2xl border border-gold/15 bg-card p-5">
+            <div key={t.id} className={cn('rounded-2xl border bg-card p-5 transition-all', selected.has(t.id) ? 'border-gold ring-2 ring-gold/30' : 'border-gold/15')}>
               <div className="flex items-start gap-4">
+                <label className="cursor-pointer pt-1">
+                  <input type="checkbox" checked={selected.has(t.id)} onChange={() => toggleSelect(t.id)} className="h-5 w-5 rounded accent-[var(--gold)]" />
+                </label>
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gold/10 text-gold font-bold">{t.name.charAt(0)}</div>
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center justify-between gap-2">
@@ -1035,6 +1224,7 @@ function SettingsTab() {
   const [settings, setSettings] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadingCat, setUploadingCat] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -1048,6 +1238,38 @@ function SettingsTab() {
       toast({ title: 'Settings saved' });
     } catch (e: any) { toast({ title: 'Error', description: e.message, variant: 'destructive' }); }
     finally { setSaving(false); }
+  };
+
+  // Category images stored as JSON in settings.categoryImages
+  const categoryImages: Record<string, string> = (() => {
+    try {
+      const raw = settings.categoryImages;
+      if (!raw) return {};
+      return typeof raw === 'string' ? JSON.parse(raw) : raw;
+    } catch { return {}; }
+  })();
+
+  const setCategoryImage = (cat: string, url: string) => {
+    const updated = { ...categoryImages, [cat]: url };
+    setSettings({ ...settings, categoryImages: JSON.stringify(updated) });
+  };
+
+  const handleCatImageUpload = async (cat: string, file: File) => {
+    setUploadingCat(cat);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', 'categories');
+      const res = await fetch('/api/upload', { method: 'POST', body: formData, credentials: 'include' });
+      if (!res.ok) throw new Error('Upload failed');
+      const data = await res.json();
+      setCategoryImage(cat, data.url);
+      toast({ title: 'Image uploaded' });
+    } catch (e: any) {
+      toast({ title: 'Upload failed', description: e.message, variant: 'destructive' });
+    } finally {
+      setUploadingCat(null);
+    }
   };
 
   if (loading) return <div className="h-64 rounded-2xl bg-card animate-pulse" />;
@@ -1073,13 +1295,25 @@ function SettingsTab() {
     { key: 'stats_artists', label: 'Stats: Artists' },
   ];
 
+  const categoryList = [
+    { key: 'Spiritual', label: 'Spiritual Events', icon: '🛕' },
+    { key: 'Singing', label: 'Singing Events', icon: '🎤' },
+    { key: 'Wedding', label: 'Wedding Events', icon: '💍' },
+    { key: 'Family', label: 'Family Events', icon: '🎉' },
+    { key: 'Corporate', label: 'Corporate Events', icon: '🏢' },
+    { key: 'Stage Shows', label: 'Stage Shows', icon: '🎭' },
+  ];
+
   return (
     <div className="space-y-6">
       <div>
         <h1 className="font-display text-2xl sm:text-3xl font-bold">Settings</h1>
         <p className="text-sm text-foreground/60">Manage site-wide contact details and stats.</p>
       </div>
+
+      {/* General Settings */}
       <div className="rounded-2xl border border-gold/15 bg-card p-5 sm:p-6">
+        <h2 className="font-display text-lg font-bold mb-4">General Settings</h2>
         <div className="grid sm:grid-cols-2 gap-4">
           {fields.map(f => (
             <div key={f.key} className="space-y-2">
@@ -1088,11 +1322,67 @@ function SettingsTab() {
             </div>
           ))}
         </div>
-        <div className="mt-6 flex justify-end">
-          <Button onClick={save} disabled={saving} className="bg-gold-gradient text-white hover:opacity-90">
-            {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4 mr-1" />} Save Settings
-          </Button>
+      </div>
+
+      {/* Category Images */}
+      <div className="rounded-2xl border border-gold/15 bg-card p-5 sm:p-6">
+        <h2 className="font-display text-lg font-bold mb-1">Event Category Images</h2>
+        <p className="text-sm text-foreground/60 mb-4">Upload background images for each category card on the home page. If no image is set, the emoji icon will be used.</p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {categoryList.map(cat => (
+            <div key={cat.key} className="rounded-xl border border-border bg-background p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-2xl">{cat.icon}</span>
+                <span className="font-medium text-sm">{cat.label}</span>
+              </div>
+              {categoryImages[cat.key] ? (
+                <div className="relative mb-3 rounded-lg overflow-hidden aspect-[4/3]">
+                  <img src={categoryImages[cat.key]} alt={cat.label} className="h-full w-full object-cover" loading="lazy" />
+                  <button
+                    onClick={() => setCategoryImage(cat.key, '')}
+                    className="absolute top-1 right-1 p-1.5 rounded-md bg-red-500/80 text-white hover:bg-red-500"
+                    aria-label="Remove image"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              ) : (
+                <div className="mb-3 rounded-lg border-2 border-dashed border-border aspect-[4/3] flex items-center justify-center text-foreground/30">
+                  <Image className="h-8 w-8" />
+                </div>
+              )}
+              <label className="block">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={e => {
+                    const file = e.target.files?.[0];
+                    if (file) handleCatImageUpload(cat.key, file);
+                  }}
+                />
+                <span className="inline-flex items-center justify-center w-full h-9 rounded-md bg-gold-gradient text-white text-sm font-medium cursor-pointer hover:opacity-90">
+                  {uploadingCat === cat.key ? <Loader2 className="h-4 w-4 animate-spin" /> : <>
+                    <Plus className="h-4 w-4 mr-1" /> Upload Image
+                  </>}
+                </span>
+              </label>
+              <Input
+                className="mt-2 text-xs"
+                placeholder="or paste image URL"
+                value={categoryImages[cat.key] || ''}
+                onChange={e => setCategoryImage(cat.key, e.target.value)}
+              />
+            </div>
+          ))}
         </div>
+      </div>
+
+      {/* Save button */}
+      <div className="flex justify-end">
+        <Button onClick={save} disabled={saving} className="bg-gold-gradient text-white hover:opacity-90">
+          {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4 mr-1" />} Save All Settings
+        </Button>
       </div>
     </div>
   );

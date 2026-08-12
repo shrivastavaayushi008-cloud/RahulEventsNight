@@ -96,16 +96,15 @@ export function Navbar({ route, navigate, phoneDisplay, phone, whatsapp, brandHi
           </button>
 
           {/* Desktop nav */}
-          <nav className="hidden xl:flex items-center gap-0.5">
+          <nav className="hidden xl:flex items-center gap-2">
             {NAV_ITEMS.map((item, i) => (
               <button
                 key={item.route}
                 onClick={() => go(item.route)}
                 className={cn(
-                  'relative px-3 py-2 text-sm font-medium transition-colors',
+                  'relative px-4 py-2 text-sm font-medium transition-colors',
                   route === item.route ? 'text-gold' : 'text-foreground/80 hover:text-gold'
                 )}
-                style={{ animationDelay: `${i * 50}ms` }}
               >
                 {item.label}
                 {route === item.route && (
@@ -115,8 +114,8 @@ export function Navbar({ route, navigate, phoneDisplay, phone, whatsapp, brandHi
             ))}
           </nav>
 
-          {/* CTA + Theme toggle */}
-          <div className="hidden xl:flex items-center gap-2">
+          {/* CTA + Theme toggle - desktop */}
+          <div className="hidden xl:flex items-center gap-3">
             <ThemeToggle />
             <Button
               onClick={() => go('contact')}
@@ -126,11 +125,16 @@ export function Navbar({ route, navigate, phoneDisplay, phone, whatsapp, brandHi
             </Button>
           </div>
 
-          {/* Mobile toggle */}
-          <div className="xl:flex items-center gap-2 hidden">
-          </div>
+          {/* Mobile - toggle + Book Now at corner */}
           <div className="flex items-center gap-2 xl:hidden">
             <ThemeToggle />
+            <Button
+              onClick={() => go('contact')}
+              size="sm"
+              className="bg-gold-gradient text-white hover:opacity-90 font-semibold shadow-gold h-9 px-4"
+            >
+              Book
+            </Button>
             <button
               onClick={() => setOpen(!open)}
               className="p-2 text-foreground"

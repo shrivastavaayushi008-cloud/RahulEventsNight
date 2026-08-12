@@ -271,8 +271,8 @@ export function ContactPage({ data, loading, navigate }: PageProps) {
             <div className="rounded-2xl border border-gold/15 bg-card p-2 overflow-hidden">
               <div className="aspect-[4/3] rounded-xl overflow-hidden bg-muted">
                 <iframe
-                  title="Location"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241317.11609823277!2d72.71637635!3d19.08218455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c6306644edc1%3A0x5da89ed6024e1118!2sDelhi!5e0!3m2!1sen!2sin!4v1700000000000"
+                  title="RahulEventsNight Location - Attardah Pokhariyapith"
+                  src="https://www.google.com/maps?q=Attardah+Pokhariyapith+Ujjwal+Vidyapith+School+842002&output=embed"
                   width="100%" height="100%" style={{ border: 0, minHeight: '260px' }} loading="lazy" referrerPolicy="no-referrer-when-downgrade"
                 />
               </div>

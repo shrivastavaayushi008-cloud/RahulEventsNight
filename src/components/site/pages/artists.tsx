@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Phone, MessageCircle, Star, Youtube, Instagram, Facebook, Mic, Music, Users as UsersIcon, User } from 'lucide-react';
+import { Phone, MessageCircle, Star, Youtube, Instagram, Facebook, Mic, Music, Users as UsersIcon, User, Briefcase } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SectionHeading } from '@/components/site/section-heading';
 import type { SiteData } from '@/hooks/use-site-data';
@@ -14,12 +14,13 @@ interface PageProps {
   navigate: (r: Route, p?: string) => void;
 }
 
-const ROLE_FILTERS = ['all', 'Singer', 'Anchor', 'Musician', 'Band Member'];
+const ROLE_FILTERS = ['all', 'Singer', 'Anchor', 'Musician', 'Band Member', 'Organiser'];
 const ROLE_ICONS: Record<string, any> = {
   Singer: Mic,
   Anchor: User,
   Musician: Music,
   'Band Member': UsersIcon,
+  Organiser: Briefcase,
 };
 
 export function ArtistsPage({ data, loading, navigate }: PageProps) {
@@ -115,7 +116,7 @@ function ArtistCard({ artist, navigate }: { artist: Artist; navigate: (r: Route)
   return (
     <div className="group rounded-2xl border border-gold/15 bg-card overflow-hidden transition-all hover:-translate-y-1 hover:shadow-lux">
       <div className="relative aspect-[3/4] overflow-hidden">
-        <img src={artist.avatar} alt={artist.name} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+        <img src={artist.avatar} alt={artist.name} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
         {artist.featured && (
           <span className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-full bg-gold-gradient px-2 py-0.5 text-[10px] font-bold text-maroon">
             <Star className="h-2.5 w-2.5 fill-maroon" /> Top

@@ -1,18 +1,15 @@
-// RahulEventsNight - Spiritual & Musical Event Platform
-// Focus: Jagran, Hanuman Aradhna, Track Singing, Wedding Song Events
-// Database: SQLite (dev) / MongoDB (production via DATABASE_URL env)
-
+// RahulEventsNight - MongoDB (Production)
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model AdminUser {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   email     String   @unique
   name      String
   password  String
@@ -22,7 +19,7 @@ model AdminUser {
 }
 
 model Event {
-  id          String   @id @default(cuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   slug        String   @unique
   category    String
@@ -40,7 +37,7 @@ model Event {
 }
 
 model GalleryItem {
-  id          String   @id @default(cuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   category    String
   type        String
@@ -56,7 +53,7 @@ model GalleryItem {
 }
 
 model Artist {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   role      String
   specialty String?
@@ -72,7 +69,7 @@ model Artist {
 }
 
 model Video {
-  id          String   @id @default(cuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   category    String
   youtubeId   String
@@ -85,7 +82,7 @@ model Video {
 }
 
 model UpcomingEvent {
-  id          String   @id @default(cuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   category    String
   eventDate   String
@@ -101,7 +98,7 @@ model UpcomingEvent {
 }
 
 model Testimonial {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   role      String
   company   String?
@@ -115,7 +112,7 @@ model Testimonial {
 }
 
 model TeamMember {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   role      String
   bio       String?
@@ -128,7 +125,7 @@ model TeamMember {
 }
 
 model Inquiry {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   phone     String
   email     String
@@ -141,7 +138,7 @@ model Inquiry {
 }
 
 model SiteSetting {
-  id    String @id @default(cuid())
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
   key   String @unique
   value String
 }

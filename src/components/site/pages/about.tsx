@@ -62,7 +62,7 @@ export function AboutPage({ data, loading, navigate }: PageProps) {
         <div className="mx-auto max-w-7xl px-4 lg:px-8 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div className="relative">
             <div className="rounded-3xl overflow-hidden aspect-[4/3] shadow-lux border border-gold/20">
-              <img src="/images/hero/hero-jagran.png" alt="Jagran event" className="h-full w-full object-cover" />
+              <img src="/images/hero/hero-jagran.jpg" alt="Jagran event" className="h-full w-full object-cover" loading="lazy" />
             </div>
           </div>
           <div>

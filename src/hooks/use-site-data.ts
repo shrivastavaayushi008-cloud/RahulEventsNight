@@ -45,14 +45,32 @@ export function useSiteData() {
       return;
     }
     fetch('/api/site')
-      .then(r => r.json())
+      .then(r => {
+        if (!r.ok) throw new Error('API error');
+        return r.json();
+      })
       .then(d => {
         if (!mounted) return;
-        cache = d as SiteData;
-        setData(d as SiteData);
+        // Ensure all fields exist to prevent crashes
+        const safe: SiteData = {
+          events: Array.isArray(d.events) ? d.events : [],
+          gallery: Array.isArray(d.gallery) ? d.gallery : [],
+          testimonials: Array.isArray(d.testimonials) ? d.testimonials : [],
+          artists: Array.isArray(d.artists) ? d.artists : [],
+          videos: Array.isArray(d.videos) ? d.videos : [],
+          upcoming: Array.isArray(d.upcoming) ? d.upcoming : [],
+          settings: d.settings && typeof d.settings === 'object' ? d.settings : {},
+        };
+        cache = safe;
+        setData(safe);
         setLoading(false);
       })
-      .catch(() => { if (mounted) setLoading(false); });
+      .catch(() => {
+        if (mounted) {
+          setData(FALLBACK);
+          setLoading(false);
+        }
+      });
     return () => { mounted = false; };
   }, []);
 
