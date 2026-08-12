@@ -42,30 +42,17 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
   const waLink = whatsapp ? `https://wa.me/91${whatsapp}` : '#';
 
   return (
-<<<<<<< HEAD
-    <section className="relative min-h-[100svh] flex items-center overflow-hidden bg-black">
-      {/* Banner background - fits properly on all devices */}
-=======
     <section className="relative min-h-[100svh] flex items-end overflow-hidden bg-black">
-      {/* Banner background - shows the full poster as-is */}
->>>>>>> 0cdd9d38e11599a408a8b341535ca2463df16e9d
+      {/* Banner background - fits properly on all devices */}
       <div className="absolute inset-0">
         <img
           src="/images/hero/banner.jpg"
           alt="RahulEventsNight Banner"
-<<<<<<< HEAD
           className="h-full w-full object-contain sm:object-cover sm:object-left"
           loading="eager"
           fetchPriority="high"
         />
         {/* Dark overlay at bottom for button readability */}
-=======
-          className="h-full w-full object-cover object-center sm:object-left"
-          loading="eager"
-          fetchPriority="high"
-        />
-        {/* Dark gradient only at bottom for button readability */}
->>>>>>> 0cdd9d38e11599a408a8b341535ca2463df16e9d
         <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black via-black/70 to-transparent" />
       </div>
 

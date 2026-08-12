@@ -19,19 +19,11 @@ export function Footer({ navigate, settings }: FooterProps) {
   const waLink = whatsapp ? `https://wa.me/91${whatsapp}` : '#';
 
   return (
-<<<<<<< HEAD
-    <footer className="mt-auto bg-[#1a1a1a] border-t border-gold/20 text-white">
-      <div className="mx-auto max-w-7xl px-4 lg:px-8 py-12 lg:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          {/* Brand */}
-          <div>
-=======
     <footer className="mt-auto bg-black border-t border-gold/20 text-white">
       <div className="mx-auto max-w-7xl px-4 lg:px-8 py-8 sm:py-12 lg:py-16">
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-10">
           {/* Brand - full width on mobile */}
           <div className="col-span-2 md:col-span-2 lg:col-span-1">
->>>>>>> 0cdd9d38e11599a408a8b341535ca2463df16e9d
             <div className="flex items-center gap-2.5 mb-4">
               <span className="relative h-11 w-11 rounded-full overflow-hidden ring-2 ring-gold/30 shadow-lux">
                 <Image src="/logo.png" alt="Logo" fill className="object-cover" />
