@@ -44,15 +44,17 @@ function Hero({ settings, navigate }: { settings: any; navigate: (r: Route) => v
 
   return (
     <section className="relative min-h-[100svh] flex items-center overflow-hidden bg-black">
-      {/* Banner background - highlighted, light overlay */}
+      {/* Banner background - fits properly on all devices */}
       <div className="absolute inset-0">
         <img
-          src="/images/hero/banner.png"
+          src="/images/hero/banner.jpg"
           alt="RahulEventsNight Banner"
-          className="h-full w-full object-cover object-center animate-kenburns"
+          className="h-full w-full object-contain sm:object-cover sm:object-left"
+          loading="eager"
+          fetchPriority="high"
         />
-        {/* Light overlay - banner stays visible, only darken bottom for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-black/30" />
+        {/* Dark overlay at bottom for button readability */}
+        <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black via-black/70 to-transparent" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-20 w-full">
