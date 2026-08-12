@@ -147,7 +147,11 @@ export function Footer({ navigate, settings }: FooterProps) {
           <p className="text-xs text-white/50">
             © {year} RahulEventsNight. All rights reserved.
           </p>
-          <p className="font-hindi text-xs text-gold/70">आपका विश्वास, हमारी पहचान</p>
+          <div className="flex items-center gap-4">
+            <a href="/privacy-policy" className="text-xs text-white/40 hover:text-gold transition-colors">Privacy Policy</a>
+            <a href="/terms-of-service" className="text-xs text-white/40 hover:text-gold transition-colors">Terms of Service</a>
+            <p className="font-hindi text-xs text-gold/70">आपका विश्वास, हमारी पहचान</p>
+          </div>
         </div>
       </div>
     </footer>

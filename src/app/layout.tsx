@@ -196,6 +196,54 @@ const eventStructuredData = {
   },
 };
 
+// FAQ Schema for Google Rich Snippets
+const faqStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "What services does RahulEventsNight offer?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "We offer Jagran, Hanuman Aradhna, Mata Ki Chowki, Sundarkand Path, Track Singing, Live Singing, Bollywood Night, Sufi Night, Sangeet Night, Wedding Singing, Bhajan Sandhya, and Live Band performances.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How can I book an event with RahulEventsNight?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "You can book by calling +91 97099 54777, WhatsApp +91 79799 62408, or filling the booking form on our website rahuleventsnight.online.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Which areas does RahulEventsNight serve?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "We serve Delhi NCR, Bihar (Muzaffarpur, Patna), and nearby areas. We also travel for events across India.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What is the booking advance and cancellation policy?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Advance payment is required to confirm booking. Cancellation 15+ days before: 50% refund. 7-14 days: 25% refund. Within 7 days: No refund. Rescheduling allowed subject to availability.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Do you provide sound system and stage setup?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes, we provide complete sound system, stage lighting, and decoration as part of our event package. Contact us for customized quotes.",
+      },
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -210,10 +258,16 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(eventStructuredData) }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
+        />
         {/* Google Search Console verification - replace content with your code */}
         <meta name="google-site-verification" content="YOUR_GOOGLE_VERIFICATION_CODE" />
         {/* Bing verification */}
         <meta name="msvalidate.01" content="YOUR_BING_VERIFICATION_CODE" />
+        {/* Google Analytics - replace G-XXXXXXX with your tracking ID */}
+        {/* <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script> */}
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${tiroHindi.variable} antialiased bg-background text-foreground`}
